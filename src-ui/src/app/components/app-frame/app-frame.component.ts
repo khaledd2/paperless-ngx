@@ -6,7 +6,13 @@ import {
   moveItemInArray,
 } from '@angular/cdk/drag-drop'
 import { NgClass } from '@angular/common'
-import { Component, HostListener, inject, OnInit } from '@angular/core'
+import {
+  Component,
+  HostListener,
+  inject,
+  OnInit,
+  LOCALE_ID,
+} from '@angular/core'
 import { ActivatedRoute, Router, RouterModule } from '@angular/router'
 import {
   NgbCollapseModule,
@@ -181,8 +187,12 @@ export class AppFrameComponent
     return `${environment.appTitle} v${this.settingsService.get(SETTINGS_KEYS.VERSION)}${environment.tag === 'prod' ? '' : ` #${environment.tag}`}`
   }
 
+  private localeId = inject(LOCALE_ID)
+
   get customAppTitle(): string {
-    return this.settingsService.get(SETTINGS_KEYS.APP_TITLE)
+    return this.localeId.startsWith('ar')
+      ? 'شفت - للارشفة السحابية'
+      : 'Shift - Cloud Archiving'
   }
 
   get canSaveSettings(): boolean {

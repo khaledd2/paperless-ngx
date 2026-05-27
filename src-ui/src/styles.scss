@@ -1,4 +1,7 @@
 @use "sass:meta";
+
+@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@200..1000&display=swap');
+
 // bs variables
 $grid-gutter-width: 1.5rem;
 $border-radius: .375rem;
@@ -64,6 +67,10 @@ $grid-breakpoints: (
 }
 
 // Paperless-ngx styles
+body, input, select, textarea, button, .ng-select {
+  font-family: 'Cairo', sans-serif !important;
+}
+
 body {
   --pngx-body-font-size: 0.875rem;
   font-size: var(--pngx-body-font-size);

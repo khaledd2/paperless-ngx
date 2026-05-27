@@ -1,0 +1,95 @@
+# Trial Environment Docker Compose Template
+# This file is used by the trial-env.sh script to spin up isolated
+# Paperless-ngx instances per organization.
+#
+# Variables substituted by the management script:
+#   ${ORG_NAME}      - Organization identifier (lowercase, alphanumeric + hyphens)
+#   ${WEB_PORT}      - Host port for the web UI
+#   ${PAPERLESS_SECRET_KEY} - Unique secret key for this instance
+#   ${PAPERLESS_ADMIN_USER} - Admin username (default: admin)
+#   ${PAPERLESS_ADMIN_PASSWORD} - Admin password
+#   ${PAPERLESS_IMAGE} - Image running the webserver (default: paperless-ngx:local)
+#
+# IMPORTANT: the webserver must run the image built from THIS fork's Dockerfile.
+# The upstream ghcr.io/paperless-ngx/paperless-ngx image ships the vanilla UI and
+# will silently show none of the fork's UI changes (logo, RTL styles, ar-AR
+# bundle, app title). Build the fork image with:
+#   docker build -t paperless-ngx:local .
+#
+# Each org gets its own:
+#   - PostgreSQL database
+#   - Redis broker
+#   - Paperless-ngx webserver
+#   - Isolated Docker volumes
+
+services:
+  broker:
+    image: docker.io/library/redis:8
+    container_name: paperless-trial-${ORG_NAME}-redis
+    restart: unless-stopped
+    volumes:
+      - redisdata:/data
+    networks:
+      - internal
+
+  db:
+    image: docker.io/library/postgres:18
+    container_name: paperless-trial-${ORG_NAME}-db
+    restart: unless-stopped
+    volumes:
+      - pgdata:/var/lib/postgresql
+    environment:
+      POSTGRES_DB: paperless
+      POSTGRES_USER: paperless
+      POSTGRES_PASSWORD: paperless
+    networks:
+      - internal
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U paperless"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  webserver:
+    # Fork image, NOT ghcr.io/paperless-ngx/paperless-ngx (see header note).
+    image: ${PAPERLESS_IMAGE:-paperless-ngx:local}
+    container_name: paperless-trial-${ORG_NAME}-web
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+      broker:
+        condition: service_started
+    ports:
+      - "${WEB_PORT}:8000"
+    volumes:
+      - data:/usr/src/paperless/data
+      - media:/usr/src/paperless/media
+      - consume:/usr/src/paperless/consume
+      - export:/usr/src/paperless/export
+    environment:
+      PAPERLESS_REDIS: redis://broker:6379
+      PAPERLESS_DBHOST: db
+      PAPERLESS_DBENGINE: postgresql
+      PAPERLESS_SECRET_KEY: ${PAPERLESS_SECRET_KEY}
+      PAPERLESS_ADMIN_USER: ${PAPERLESS_ADMIN_USER:-admin}
+      PAPERLESS_ADMIN_PASSWORD: ${PAPERLESS_ADMIN_PASSWORD}
+      PAPERLESS_URL: http://localhost:${WEB_PORT}
+      # Reduce resource usage for trial instances
+      PAPERLESS_TASK_WORKERS: 1
+      PAPERLESS_THREADS_PER_WORKER: 1
+      PAPERLESS_WEBSERVER_WORKERS: 1
+    networks:
+      - internal
+
+volumes:
+  data:
+  media:
+  pgdata:
+  redisdata:
+  consume:
+  export:
+
+networks:
+  internal:
+    driver: bridge
