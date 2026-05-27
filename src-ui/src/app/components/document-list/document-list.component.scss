@@ -54,6 +54,11 @@ $paperless-card-breakpoints: (
   left: auto !important;
 }
 
+.dropdown-menu-left {
+  left: 0 !important;
+  right: auto !important;
+}
+
 .sticky-top {
   z-index: 990; // below main navbar
   top: calc(7rem - 2px); // height of navbar + search row (mobile)
