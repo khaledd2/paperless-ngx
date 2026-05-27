@@ -75,7 +75,7 @@
     }
     <div class="btn-group">
       <button type="button" class="btn btn-sm btn-outline-primary me-2" (click)="setPermissions()" [disabled]="!userOwnsAll || !userCanEditAll">
-        <i-bs name="person-fill-lock"></i-bs><div class="d-none d-sm-inline ms-1"><ng-container i18n>Permissions</ng-container></div>
+        <i-bs name="person-fill-lock"></i-bs><div class="d-none d-sm-inline me-1"><ng-container i18n>Permissions</ng-container></div>
       </button>
     </div>
   </div>
@@ -83,7 +83,7 @@
     <div class="btn-toolbar">
       <div ngbDropdown>
         <button class="btn btn-sm btn-outline-primary" id="dropdownSelect" [disabled]="!userCanEdit && !userCanAdd" ngbDropdownToggle>
-          <i-bs name="three-dots"></i-bs><div class="d-none d-sm-inline ms-1"><ng-container i18n>Actions</ng-container></div>
+          <i-bs name="three-dots"></i-bs><div class="d-none d-sm-inline me-1"><ng-container i18n>Actions</ng-container></div>
         </button>
         <div ngbDropdownMenu aria-labelledby="dropdownSelect" class="shadow">
           <button ngbDropdownItem (click)="reprocessSelected()" [disabled]="!userCanEditAll && !userCanEditAll">
@@ -105,7 +105,7 @@
         ngbDropdownToggle
         [disabled]="disabled || !list.hasSelection || list.allSelected"
       >
-        <i-bs name="send"></i-bs><div class="d-none d-sm-inline ms-1"><ng-container i18n>Send</ng-container>
+        <i-bs name="send"></i-bs><div class="d-none d-sm-inline me-1"><ng-container i18n>Send</ng-container>
         </div>
       </button>
       <div ngbDropdownMenu aria-labelledby="dropdownSend" class="shadow">
@@ -133,7 +133,7 @@
             <span class="visually-hidden">Preparing download...</span>
           </div>
         }
-        <div class="d-none d-sm-inline ms-1"><ng-container i18n>Download</ng-container></div>
+        <div class="d-none d-sm-inline me-1"><ng-container i18n>Download</ng-container></div>
       </button>
       <div ngbDropdown class="me-2 d-flex btn-group" role="group">
         <button type="button" class="btn btn-sm btn-outline-primary dropdown-toggle-split rounded-end" ngbDropdownToggle></button>

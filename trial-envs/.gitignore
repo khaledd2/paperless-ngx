@@ -1,0 +1,4 @@
+# Instance data (generated per org)
+instances/
+# Registry file (contains credentials)
+registry.json

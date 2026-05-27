@@ -40,6 +40,65 @@
     --pngx-sidebar-width: 8.33333333%;
   }
 }
+
+/* RTL: move sidebar to the right side and fix item paddings/margins */
+.rtl-layout .sidebar {
+  left: unset;
+  right: 0;
+  box-shadow: inset 1px 0 0 rgba(0, 0, 0, .1);
+  text-align: right;
+
+  // The icons of the items have right margin (it must be left)
+  // This also corrects the apparent "right padding" of the sidebar items.
+  i-bs.me-2 {
+    margin-right: 0 !important;
+    margin-left: 0.5rem !important;
+  }
+
+  // Same logic for any other me-2 / me-3 / me-n3 margins in the sidebar
+  .me-2 {
+    margin-right: 0 !important;
+    margin-left: 0.5rem !important;
+  }
+
+  .me-3 {
+    margin-right: 0 !important;
+    margin-left: 1rem !important;
+  }
+
+  .me-n3 {
+    margin-right: 0 !important;
+    margin-left: -1rem !important;
+  }
+
+  // Swap ms-2 to me-2
+  .ms-2 {
+    margin-left: 0 !important;
+    margin-right: 0.5rem !important;
+  }
+
+  .nav-link-additional {
+    margin-left: 0 !important;
+    margin-right: 0.25rem !important;
+  }
+
+  // Position absolute elements like close and drag grip handles in RTL
+  .close {
+    right: unset !important;
+    left: 0.4rem !important;
+  }
+
+  .position-absolute.end-0 {
+    right: unset !important;
+    left: 0 !important;
+  }
+
+  // Reset browser/Bootstrap default padding on sidebar nav lists in RTL
+  .nav {
+    padding-right: 0 !important;
+    padding-left: 0 !important;
+  }
+}
 @media (max-width: 767.98px) {
   .sidebar {
     top: 3.5rem;
@@ -152,6 +211,16 @@ main {
   }
 
   .sidebar.slim .sidebar-slim-toggler {
+    --pngx-sidebar-width: 50px !important;
+  }
+
+  /* RTL: flip toggler to the left edge of the right-hand sidebar */
+  .rtl-layout .sidebar-slim-toggler {
+    left: unset;
+    right: calc(var(--pngx-sidebar-width) - 12px);
+  }
+
+  .rtl-layout .sidebar.slim .sidebar-slim-toggler {
     --pngx-sidebar-width: 50px !important;
   }
 }

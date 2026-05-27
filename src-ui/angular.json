@@ -130,6 +130,11 @@
               "localize": [
                 "en-US"
               ]
+            },
+            "ar-AR": {
+              "localize": [
+                "ar-AR"
+              ]
             }
           },
           "defaultConfiguration": ""
@@ -142,6 +147,9 @@
           "configurations": {
             "production": {
               "buildTarget": "paperless-ui:build:production"
+            },
+            "ar-AR": {
+              "buildTarget": "paperless-ui:build:ar-AR"
             }
           }
         },
