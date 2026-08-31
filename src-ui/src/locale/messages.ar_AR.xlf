@@ -1960,7 +1960,7 @@
           <context context-type="sourcefile">src/app/components/app-frame/app-frame.component.html</context>
           <context context-type="linenumber">297</context>
         </context-group>
-        <target state="needs-translation">Tasks</target>
+        <target state="translated">المهام</target>
       </trans-unit>
       <trans-unit id="8492095365580052820" datatype="html">
         <source>Tasks shows detailed information about document consumption and system tasks.</source>
@@ -1968,7 +1968,7 @@
           <context context-type="sourcefile">src/app/components/admin/tasks/tasks.component.html</context>
           <context context-type="linenumber">4</context>
         </context-group>
-        <target state="needs-translation">Tasks shows detailed information about document consumption and system tasks.</target>
+        <target state="translated">تعرض المهام معلومات تفصيلية حول استهلاك المستندات ومهام النظام.</target>
       </trans-unit>
       <trans-unit id="103921551219467537" datatype="html">
         <source>Clear selection</source>
@@ -2032,7 +2032,7 @@
           <context context-type="sourcefile">src/app/components/admin/tasks/tasks.component.html</context>
           <context context-type="linenumber">55</context>
         </context-group>
-        <target state="needs-translation">Filter by</target>
+        <target state="translated">تصفية حسب</target>
       </trans-unit>
       <trans-unit id="424356320420294719" datatype="html">
         <source>All types</source>
@@ -2044,7 +2044,7 @@
           <context context-type="sourcefile">src/app/components/admin/tasks/tasks.component.ts</context>
           <context context-type="linenumber">209</context>
         </context-group>
-        <target state="needs-translation">All types</target>
+        <target state="translated">كل الأنواع</target>
       </trans-unit>
       <trans-unit id="131016739441837046" datatype="html">
         <source>All sources</source>
@@ -2056,7 +2056,7 @@
           <context context-type="sourcefile">src/app/components/admin/tasks/tasks.component.ts</context>
           <context context-type="linenumber">221</context>
         </context-group>
-        <target state="needs-translation">All sources</target>
+        <target state="translated">كل المصادر</target>
       </trans-unit>
       <trans-unit id="6849725902312323996" datatype="html">
         <source>Reset filters</source>
@@ -2080,7 +2080,7 @@
           <context context-type="sourcefile">src/app/components/admin/tasks/tasks.component.html</context>
           <context context-type="linenumber">121</context>
         </context-group>
-        <target state="needs-translation">{VAR_PLURAL, plural, =1 {1 task} other {<x id="INTERPOLATION"/> tasks}}</target>
+        <target state="translated">{VAR_PLURAL, plural, =1 {مهمة واحدة} other {<x id="INTERPOLATION"/> مهام}}</target>
       </trans-unit>
       <trans-unit id="8953033926734869941" datatype="html" approved="yes">
         <source>Name</source>
@@ -2356,7 +2356,7 @@
           <context context-type="sourcefile">src/app/components/admin/tasks/tasks.component.html</context>
           <context context-type="linenumber">231</context>
         </context-group>
-        <target state="needs-translation">Result message</target>
+        <target state="translated">رسالة النتيجة</target>
       </trans-unit>
       <trans-unit id="6621329748219109148" datatype="html">
         <source>Duplicate</source>
@@ -2404,7 +2404,7 @@
           <context context-type="sourcefile">src/app/components/admin/tasks/tasks.component.html</context>
           <context context-type="linenumber">256</context>
         </context-group>
-        <target state="needs-translation">Input data</target>
+        <target state="translated">بيانات الإدخال</target>
       </trans-unit>
       <trans-unit id="1585185618099050920" datatype="html">
         <source>Result data</source>
@@ -2412,7 +2412,7 @@
           <context context-type="sourcefile">src/app/components/admin/tasks/tasks.component.html</context>
           <context context-type="linenumber">262</context>
         </context-group>
-        <target state="needs-translation">Result data</target>
+        <target state="translated">بيانات النتيجة</target>
       </trans-unit>
       <trans-unit id="7976920528153858271" datatype="html">
         <source>No tasks match the current filters.</source>
@@ -2420,7 +2420,7 @@
           <context context-type="sourcefile">src/app/components/admin/tasks/tasks.component.html</context>
           <context context-type="linenumber">284</context>
         </context-group>
-        <target state="needs-translation">No tasks match the current filters.</target>
+        <target state="translated">لا توجد مهام تطابق المرشحات الحالية.</target>
       </trans-unit>
       <trans-unit id="2525230676386818985" datatype="html">
         <source>Result</source>
@@ -2436,7 +2436,7 @@
           <context context-type="sourcefile">src/app/components/admin/tasks/tasks.component.ts</context>
           <context context-type="linenumber">55</context>
         </context-group>
-        <target state="needs-translation">Needs attention</target>
+        <target state="translated">يحتاج انتباهاً</target>
       </trans-unit>
       <trans-unit id="3307214558906712688" datatype="html">
         <source>In progress</source>
@@ -2444,7 +2444,7 @@
           <context context-type="sourcefile">src/app/components/admin/tasks/tasks.component.ts</context>
           <context context-type="linenumber">56</context>
         </context-group>
-        <target state="needs-translation">In progress</target>
+        <target state="translated">قيد التنفيذ</target>
       </trans-unit>
       <trans-unit id="1371178633976505412" datatype="html">
         <source>Recently completed</source>
@@ -2452,7 +2452,7 @@
           <context context-type="sourcefile">src/app/components/admin/tasks/tasks.component.ts</context>
           <context context-type="linenumber">57</context>
         </context-group>
-        <target state="needs-translation">Recently completed</target>
+        <target state="translated">مكتملة مؤخراً</target>
       </trans-unit>
       <trans-unit id="2936452645673957909" datatype="html">
         <source>Consume File</source>
@@ -2628,7 +2628,7 @@
           <context context-type="sourcefile">src/app/components/admin/tasks/tasks.component.ts</context>
           <context context-type="linenumber">234</context>
         </context-group>
-        <target state="needs-translation">Dismiss visible</target>
+        <target state="translated">تجاهل المرئية</target>
       </trans-unit>
       <trans-unit id="3169751690815214293" datatype="html">
         <source>Confirm Dismiss</source>
@@ -2636,7 +2636,7 @@
           <context context-type="sourcefile">src/app/components/admin/tasks/tasks.component.ts</context>
           <context context-type="linenumber">307</context>
         </context-group>
-        <target state="needs-translation">Confirm Dismiss</target>
+        <target state="translated">تأكيد التجاهل</target>
       </trans-unit>
       <trans-unit id="5029621907742319073" datatype="html">
         <source>Dismiss <x id="PH" equiv-text="tasks.size"/> tasks?</source>
@@ -2644,7 +2644,7 @@
           <context context-type="sourcefile">src/app/components/admin/tasks/tasks.component.ts</context>
           <context context-type="linenumber">308</context>
         </context-group>
-        <target state="needs-translation">Dismiss <x id="PH" equiv-text="tasks.size"/> tasks?</target>
+        <target state="translated">تجاهل <x id="PH" equiv-text="tasks.size"/> مهمة؟</target>
       </trans-unit>
       <trans-unit id="3597309129998924778" datatype="html">
         <source>Error dismissing tasks</source>
@@ -2652,7 +2652,7 @@
           <context context-type="sourcefile">src/app/components/admin/tasks/tasks.component.ts</context>
           <context context-type="linenumber">319</context>
         </context-group>
-        <target state="needs-translation">Error dismissing tasks</target>
+        <target state="translated">خطأ في تجاهل المهام</target>
       </trans-unit>
       <trans-unit id="2132179171926568807" datatype="html">
         <source>Error dismissing task</source>
@@ -2660,7 +2660,7 @@
           <context context-type="sourcefile">src/app/components/admin/tasks/tasks.component.ts</context>
           <context context-type="linenumber">331</context>
         </context-group>
-        <target state="needs-translation">Error dismissing task</target>
+        <target state="translated">خطأ في تجاهل المهمة</target>
       </trans-unit>
       <trans-unit id="8149502458056418229" datatype="html">
         <source>Success. New document id <x id="PH" equiv-text="documentId"/> created</source>
@@ -3496,7 +3496,7 @@
           <context context-type="sourcefile">src/app/components/app-frame/app-frame.component.html</context>
           <context context-type="linenumber">182</context>
         </context-group>
-        <target state="needs-translation">Attributes</target>
+        <target state="translated">السمات</target>
       </trans-unit>
       <trans-unit id="7437910965833684826" datatype="html">
         <source>Correspondents</source>
@@ -3524,7 +3524,7 @@
           <context context-type="sourcefile">src/app/components/manage/document-attributes/document-attributes.component.ts</context>
           <context context-type="linenumber">109</context>
         </context-group>
-        <target state="needs-translation">Document types</target>
+        <target state="translated">أنواع المستندات</target>
       </trans-unit>
       <trans-unit id="8835528846812581148" datatype="html">
         <source>Storage paths</source>
@@ -3536,7 +3536,7 @@
           <context context-type="sourcefile">src/app/components/manage/document-attributes/document-attributes.component.ts</context>
           <context context-type="linenumber">119</context>
         </context-group>
-        <target state="needs-translation">Storage paths</target>
+        <target state="translated">مسارات التخزين</target>
       </trans-unit>
       <trans-unit id="9149498548977462220" datatype="html">
         <source>Custom fields</source>
