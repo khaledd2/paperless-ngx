@@ -8044,7 +8044,7 @@
           <context context-type="sourcefile">src/app/components/dashboard/dashboard.component.ts</context>
           <context context-type="linenumber">61</context>
         </context-group>
-        <target state="translated">أهلاً <x id="PH" equiv-text="this.settingsService.displayName"/> ، مرحبا بكم في <x id="PH_1" equiv-text="environment.appTitle"/></target>
+        <target state="translated">أهلاً <x id="PH" equiv-text="this.settingsService.displayName"/> ، مرحبا بكم في نظام شفت للارشفة السحابية </target>
       </trans-unit>
       <trans-unit id="2901300640157872718" datatype="html">
         <source>Welcome to <x id="PH" equiv-text="environment.appTitle"/></source>
@@ -8052,7 +8052,7 @@
           <context context-type="sourcefile">src/app/components/dashboard/dashboard.component.ts</context>
           <context context-type="linenumber">63</context>
         </context-group>
-        <target state="translated">مرحبا بكم في <x id="PH" equiv-text="environment.appTitle"/></target>
+        <target state="translated">مرحبا بكم في نظام شفت للارشفة السحابية </target>
       </trans-unit>
       <trans-unit id="1325877348738783391" datatype="html">
         <source>Dashboard updated</source>
