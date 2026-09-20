@@ -1,0 +1,6 @@
+/*
+ * Bootstrap's right-to-left build, for the styles-rtl.scss entry point. Its
+ * utilities mirror the default build (`.ms-*` is a margin-right here, not a
+ * margin-left), which is why the two builds must never be loaded together.
+ */
+@import "node_modules/bootstrap/dist/css/bootstrap.rtl.css";

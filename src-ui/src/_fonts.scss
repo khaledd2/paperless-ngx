@@ -1,0 +1,6 @@
+/*
+ * Web font used across the application. Kept as its own entry point so that it
+ * is emitted before Bootstrap in both the left-to-right and right-to-left
+ * builds.
+ */
+@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@200..1000&display=swap');

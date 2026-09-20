@@ -13,5 +13,25 @@
 </head>
 <body>
   <pngx-root></pngx-root>
+  <script>
+    // Pages served by Django get their stylesheet from documents/views.py, which
+    // knows the language of the signed-in user. This is Angular's own index.html,
+    // used by `ng serve` and by any deploy that serves it directly, so it has to
+    // swap in the right-to-left bundle itself. Only ever one of the two applies:
+    // a mirrored utility such as `.ms-2` sets margin-right in the RTL build but
+    // margin-left in the default one, so loading both would apply both.
+    if (document.documentElement.dir === 'rtl') {
+      const ltr = document.querySelector(
+        'link[rel="stylesheet"][href="styles.css"]'
+      )
+      if (ltr) {
+        ltr.disabled = true
+        const rtl = document.createElement('link')
+        rtl.rel = 'stylesheet'
+        rtl.href = 'styles-rtl.css'
+        document.head.appendChild(rtl)
+      }
+    }
+  </script>
 </body>
 </html>

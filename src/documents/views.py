@@ -62,6 +62,7 @@ from django.utils import timezone
 from django.utils.decorators import method_decorator
 from django.utils.timezone import make_aware
 from django.utils.translation import get_language
+from django.utils.translation import get_language_info
 from django.utils.translation import gettext_lazy as _
 from django.views import View
 from django.views.decorators.cache import cache_control
@@ -316,6 +317,21 @@ class ResolvedRequestDocs(NamedTuple):
     root_doc: Document
 
 
+def is_bidi_language(language: str) -> bool:
+    """
+    Whether a language code such as "ar-AR" is written right-to-left.
+
+    Django's language_info carries the bidi flag for every locale it knows
+    about. Codes it does not know fall back to the language subtag, and are
+    treated as left-to-right otherwise.
+    """
+    code = language.lower()
+    try:
+        return get_language_info(code)["bidi"]
+    except KeyError:
+        return code.split("-")[0] in settings.LANGUAGES_BIDI
+
+
 class IndexView(TemplateView):
     template_name = "index.html"
 
@@ -339,20 +355,20 @@ class IndexView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        frontend_language = self.get_frontend_language()
         context["cookie_prefix"] = settings.COOKIE_PREFIX
         context["username"] = self.request.user.username
         context["full_name"] = self.request.user.get_full_name()
-        context["styles_css"] = f"frontend/{self.get_frontend_language()}/styles.css"
-        context["runtime_js"] = f"frontend/{self.get_frontend_language()}/runtime.js"
-        context["polyfills_js"] = (
-            f"frontend/{self.get_frontend_language()}/polyfills.js"
-        )
-        context["main_js"] = f"frontend/{self.get_frontend_language()}/main.js"
-        context["webmanifest"] = (
-            f"frontend/{self.get_frontend_language()}/manifest.webmanifest"
-        )
+        context["frontend_language"] = frontend_language
+        context["frontend_language_bidi"] = is_bidi_language(frontend_language)
+        context["styles_css"] = f"frontend/{frontend_language}/styles.css"
+        context["styles_rtl_css"] = f"frontend/{frontend_language}/styles-rtl.css"
+        context["runtime_js"] = f"frontend/{frontend_language}/runtime.js"
+        context["polyfills_js"] = f"frontend/{frontend_language}/polyfills.js"
+        context["main_js"] = f"frontend/{frontend_language}/main.js"
+        context["webmanifest"] = f"frontend/{frontend_language}/manifest.webmanifest"
         context["apple_touch_icon"] = (
-            f"frontend/{self.get_frontend_language()}/apple-touch-icon.png"
+            f"frontend/{frontend_language}/apple-touch-icon.png"
         )
         return context
 

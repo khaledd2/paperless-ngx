@@ -28,6 +28,7 @@ from documents.models import Tag
 from documents.signals.handlers import update_llm_suggestions_cache
 from documents.tests.utils import DirectoriesMixin
 from documents.tests.utils import read_streaming_response
+from documents.views import is_bidi_language
 from paperless.models import ApplicationConfiguration
 
 
@@ -48,14 +49,17 @@ class TestViews(DirectoriesMixin, TestCase):
 
     def test_index(self) -> None:
         self.client.force_login(self.user)
-        for language_given, language_actual in [
-            ("", "en-US"),
-            ("en-US", "en-US"),
-            ("de", "de-DE"),
-            ("en", "en-US"),
-            ("en-us", "en-US"),
-            ("fr", "fr-FR"),
-            ("jp", "en-US"),
+        for language_given, language_actual, language_bidi in [
+            ("", "en-US", False),
+            ("en-US", "en-US", False),
+            ("de", "de-DE", False),
+            ("en", "en-US", False),
+            ("en-us", "en-US", False),
+            ("fr", "fr-FR", False),
+            ("jp", "en-US", False),
+            ("ar", "ar-AR", True),
+            ("ar-ar", "ar-AR", True),
+            ("fa", "fa-IR", True),
         ]:
             if language_given:
                 self.client.cookies.load(
@@ -88,6 +92,56 @@ class TestViews(DirectoriesMixin, TestCase):
                 response.context_data["main_js"],
                 f"frontend/{language_actual}/main.js",
             )
+            self.assertEqual(
+                response.context_data["frontend_language"],
+                language_actual,
+            )
+            self.assertEqual(
+                response.context_data["frontend_language_bidi"],
+                language_bidi,
+            )
+            self.assertEqual(
+                response.context_data["styles_rtl_css"],
+                f"frontend/{language_actual}/styles-rtl.css",
+            )
+
+            # the page sets the direction and loads the matching stylesheet,
+            # never both, since the two Bootstrap builds are mirror images
+            page = response.content.decode()
+            self.assertIn(
+                f'dir="{"rtl" if language_bidi else "ltr"}"',
+                page,
+            )
+            expected_stylesheet = (
+                f"frontend/{language_actual}/styles-rtl.css"
+                if language_bidi
+                else f"frontend/{language_actual}/styles.css"
+            )
+            unused_stylesheet = (
+                f"frontend/{language_actual}/styles.css"
+                if language_bidi
+                else f"frontend/{language_actual}/styles-rtl.css"
+            )
+            self.assertIn(expected_stylesheet, page)
+            self.assertNotIn(unused_stylesheet, page)
+
+    def test_is_bidi_language(self) -> None:
+        """
+        GIVEN:
+            - Language codes, some of which Django does not know about
+        WHEN:
+            - Their direction is looked up
+        THEN:
+            - Right-to-left languages are recognised
+        """
+        self.assertTrue(is_bidi_language("ar-ar"))
+        self.assertTrue(is_bidi_language("ar-AR"))
+        self.assertTrue(is_bidi_language("fa-ir"))
+        self.assertTrue(is_bidi_language("ar-XX"))
+        self.assertFalse(is_bidi_language("en-us"))
+        self.assertFalse(is_bidi_language("de-de"))
+        self.assertFalse(is_bidi_language("xx-XX"))
+        self.assertFalse(is_bidi_language("xx"))
 
     @override_settings(BASE_URL="/paperless/")
     def test_index_app_logo_with_base_url(self) -> None:

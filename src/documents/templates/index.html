@@ -2,7 +2,7 @@
 
 {% load static i18n %}
 
-<html lang="en" data-bs-theme="auto">
+<html lang="{{ frontend_language }}" dir="{% if frontend_language_bidi %}rtl{% else %}ltr{% endif %}" data-bs-theme="auto">
 <head>
 	<meta charset="utf-8">
 	<title>Paperless-ngx</title>
@@ -13,7 +13,7 @@
 	<meta name="author" content="The Paperless-ngx Team">
 	<link rel="icon" type="image/x-icon" href="favicon.ico">
 	<link rel="manifest" href="{% static webmanifest %}">
-	<link rel="stylesheet" href="{% static styles_css %}">
+	<link rel="stylesheet" href="{% if frontend_language_bidi %}{% static styles_rtl_css %}{% else %}{% static styles_css %}{% endif %}">
 	<link rel="apple-touch-icon" href="{% static apple_touch_icon %}">
 </head>
 <body>

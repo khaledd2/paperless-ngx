@@ -126,6 +126,8 @@
   position: initial;
 }
 
+// pdf.js tags these spans by reading position within the text run, which is a
+// property of the document rather than of the interface, so they stay physical.
 :host ::ng-deep .begin:is(.textLayer .highlight) {
   border-radius: 4px 0 0 4px;
 }

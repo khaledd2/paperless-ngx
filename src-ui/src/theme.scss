@@ -207,7 +207,7 @@ $form-check-radio-checked-bg-image-dark: url("data:image/svg+xml,<svg xmlns='htt
     transform: translateZ(0); // fix for safari to force hw acceleration
 
     &.border-end {
-      border-right: none !important;
+      border-inline-end: none !important;
     }
   }
 

@@ -26,10 +26,15 @@ tbody pngx-tag {
 }
 
 tr .btn-group {
-  margin-right: 2px;
+  margin-inline-end: 2px;
   box-shadow: -6px 0px 4px -1px rgba(var(--bs-body-bg-rgb), .5);
   opacity: 0;
   pointer-events: none;
+}
+
+// the fade that masks the row content behind the buttons follows the direction
+:host-context([dir='rtl']) tr .btn-group {
+  box-shadow: 6px 0px 4px -1px rgba(var(--bs-body-bg-rgb), .5);
 }
 
 tr:hover .btn-group {

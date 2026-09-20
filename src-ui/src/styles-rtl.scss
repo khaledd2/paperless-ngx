@@ -1,0 +1,8 @@
+/*
+ * Right-to-left counterpart of styles.scss, loaded instead of it for languages
+ * that read right-to-left. Which one applies is decided by the document
+ * direction set on <html> in documents/templates/index.html.
+ */
+@use "fonts";
+@use "bootstrap-rtl";
+@use "app";

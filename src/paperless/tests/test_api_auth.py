@@ -1,5 +1,6 @@
 import uuid
 
+from django.conf import settings
 from django.contrib.auth.models import User
 from django.test import TestCase
 from django.test import override_settings
@@ -46,3 +47,31 @@ class TestApiAuthViews(TestCase):
     def test_api_auth_logout_uses_named_route(self):
         self.assertEqual(reverse("rest_framework:login"), "/api/auth/login/")
         self.assertEqual(reverse("rest_framework:logout"), "/api/auth/logout/")
+
+    def test_auth_page_direction_follows_language(self):
+        """
+        GIVEN:
+            - The login page rendered in a left-to-right and a right-to-left language
+        WHEN:
+            - The page is loaded
+        THEN:
+            - The document direction and the Bootstrap build match the language
+        """
+        for language, direction, stylesheet in [
+            ("en-us", "ltr", "bootstrap.min.css"),
+            ("ar-ar", "rtl", "bootstrap.rtl.min.css"),
+        ]:
+            self.client.cookies.load({settings.LANGUAGE_COOKIE_NAME: language})
+            response = self.client.get(reverse("rest_framework:login"))
+
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+            self.assertContains(response, f'lang="{language}"')
+            self.assertContains(response, f'dir="{direction}"')
+            self.assertContains(response, stylesheet)
+
+            other_stylesheet = (
+                "bootstrap.min.css"
+                if stylesheet == "bootstrap.rtl.min.css"
+                else "bootstrap.rtl.min.css"
+            )
+            self.assertNotContains(response, other_stylesheet)

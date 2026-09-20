@@ -12,10 +12,10 @@
   display: none;
   position: absolute;
   top: 0;
-  left: 0;
+  inset-inline-start: 0;
   padding: 0.5rem;
-  border-top-left-radius: 0.25rem;
-  border-bottom-right-radius: 0.25rem;
+  border-start-start-radius: 0.25rem;
+  border-end-end-radius: 0.25rem;
   pointer-events: none;
 
   .form-check {
@@ -24,7 +24,7 @@
     margin-bottom: 0;
 
     .form-check-input {
-      margin-left: 0;
+      margin-inline-start: 0;
     }
   }
 }
@@ -35,7 +35,7 @@
 
 .document-card-notes {
   position: absolute;
-  right: 0;
+  inset-inline-end: 0;
   top: 142px;
 }
 
@@ -58,7 +58,7 @@
 }
 
 ::ng-deep .tooltip-inner {
-  text-align: left !important;
+  text-align: start !important;
   font-size: 90%;
 }
 
@@ -68,7 +68,7 @@ a {
 
 .tags {
   top: .2rem;
-  right: 0;
+  inset-inline-end: 0;
   max-width: 80%;
   row-gap: .2rem;
   line-height: 1;
