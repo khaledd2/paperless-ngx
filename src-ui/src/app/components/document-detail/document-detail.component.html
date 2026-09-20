@@ -65,7 +65,7 @@
     <button class="btn btn-sm btn-outline-primary" id="actionsDropdown" ngbDropdownToggle>
       <i-bs name="three-dots"></i-bs><div class="d-none d-sm-inline ms-1"><ng-container i18n>Actions</ng-container></div>
     </button>
-    <div ngbDropdownMenu style="text-align: right;" aria-labelledby="actionsDropdown" class="shadow">
+    <div ngbDropdownMenu aria-labelledby="actionsDropdown" class="shadow">
       <button ngbDropdownItem (click)="reprocess()" [disabled]="!userCanEdit || !userIsOwner">
         <i-bs width="1em" height="1em" name="arrow-counterclockwise" class="me-1"></i-bs><span i18n>Reprocess</span>
       </button>
@@ -92,7 +92,7 @@
 
   <div class="ms-auto" ngbDropdown>
     <button class="btn btn-sm btn-outline-primary" id="sendDropdown" ngbDropdownToggle>
-      <i-bs name="send"></i-bs><div class="d-none d-sm-inline me-1"><ng-container i18n>Send</ng-container></div>
+      <i-bs name="send"></i-bs><div class="d-none d-sm-inline ms-1"><ng-container i18n>Send</ng-container></div>
     </button>
     <div ngbDropdownMenu aria-labelledby="actionsDropdown" class="shadow">
       <button ngbDropdownItem (click)="openShareLinks()" *pngxIfPermissions="{ action: PermissionAction.Add, type: PermissionType.ShareLink }">
@@ -118,11 +118,11 @@
           <button type="button" class="btn btn-sm btn-outline-secondary" i18n-title title="Close" (click)="close()">
             <i-bs width="1.2em" height="1.2em" name="x"></i-bs>
           </button>
+          <button type="button" class="btn btn-sm btn-outline-secondary" i18n-title title="Previous" (click)="previousDoc()" [disabled]="!hasPrevious()">
+            <i-bs width="1.2em" height="1.2em" name="arrow-left"></i-bs>
+          </button>
           <button type="button" class="btn btn-sm btn-outline-secondary"  i18n-title title="Next" (click)="nextDoc()" [disabled]="!hasNext()">
             <i-bs width="1.2em" height="1.2em" name="arrow-right"></i-bs>
-          </button>
-            <button type="button" class="btn btn-sm btn-outline-secondary" i18n-title title="Previous" (click)="previousDoc()" [disabled]="!hasPrevious()">
-            <i-bs width="1.2em" height="1.2em" name="arrow-left"></i-bs>
           </button>
         </div>
 

@@ -6,11 +6,11 @@
   <button class="btn border-0" id="notificationsDropdown" ngbDropdownToggle>
     <i-bs width="1.3em" height="1.3em" name="bell"></i-bs>
   </button>
-  <div ngbDropdownMenu class="shadow p-3" aria-labelledby="notificationsDropdown">
+  <div ngbDropdownMenu class="dropdown-menu-end shadow p-3" aria-labelledby="notificationsDropdown">
     <div class="btn-toolbar align-items-center" role="toolbar">
       <h6 i18n>Notifications</h6>
-      <div class="btn-group me-auto">
-        <button class="btn btn-sm btn-outline-secondary mb-2 me-auto"
+      <div class="btn-group ms-auto">
+        <button class="btn btn-sm btn-outline-secondary mb-2 ms-auto"
           (click)="toastService.clearToasts()"
           [disabled]="toasts.length === 0"
           i18n>Clear All</button>

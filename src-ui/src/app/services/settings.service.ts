@@ -278,12 +278,6 @@ const ISO_LANGUAGE_OPTION: LanguageOption = {
 
 const UNSAFE_OBJECT_KEYS = new Set(['__proto__', 'prototype', 'constructor'])
 
-/**
- * ISO 639-1 language codes for right-to-left scripts.
- * Add more codes here if new RTL locales are added to LANGUAGE_OPTIONS.
- */
-const RTL_LANGUAGE_CODES = new Set(['ar', 'fa', 'he', 'ur', 'yi', 'dv', 'ha'])
-
 @Injectable({
   providedIn: 'root',
 })
@@ -526,16 +520,6 @@ export class SettingsService {
 
   getLanguage(): string {
     return this.get(SETTINGS_KEYS.LANGUAGE)
-  }
-
-  /**
-   * Returns true when the currently stored language uses a right-to-left script.
-   * Checks the ISO 639-1 prefix of the locale code (e.g. 'ar' from 'ar-ar').
-   */
-  get isRTL(): boolean {
-    const lang = this.getLanguage() || this.localeId
-    const langCode = lang?.split('-')[0]?.toLowerCase()
-    return RTL_LANGUAGE_CODES.has(langCode)
   }
 
   setLanguage(language: string) {

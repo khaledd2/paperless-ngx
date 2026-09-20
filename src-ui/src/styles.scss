@@ -85,12 +85,6 @@ body {
   .col-slim {
     padding-left: calc(50px + $grid-gutter-width) !important;
   }
-
-  /* RTL: slim sidebar is on the right, offset main content from the right */
-  .rtl-layout .col-slim {
-    padding-left: unset !important;
-    padding-right: calc(50px + $grid-gutter-width) !important;
-  }
 }
 
 svg.logo {
