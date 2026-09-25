@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "snapshot_sequence": 69,
+  "snapshot_sequence": 71,
   "agents": [
     {
       "id": "agent_ec371efb",
@@ -1412,9 +1412,9 @@
         ],
         "omitted_messages": 70
       },
-      "duration_ms": 527169,
+      "duration_ms": 4778156,
       "allowed_tools": [],
-      "updated_at_ms": 1789939067295,
+      "updated_at_ms": 1790279124281,
       "session_boot_id": "boot_20655e3b-fc9",
       "owner_session_id": "2b258f8e-5d1e-4894-8574-57b65e191061"
     }

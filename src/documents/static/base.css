@@ -11,6 +11,12 @@ body {
   height: auto;
 }
 
+/* The Shift brand mark is a white glyph on a transparent background, so it
+   has to be inverted to remain visible on the light login background. */
+img.shift-logo {
+  filter: invert(1);
+}
+
 .byline {
   font-size: 0.6rem;
   letter-spacing: 0.1rem;
@@ -87,6 +93,10 @@ body {
 
   svg.logo .text {
     fill: #abb2bf !important;
+  }
+
+  img.shift-logo {
+    filter: none;
   }
 
   .byline {

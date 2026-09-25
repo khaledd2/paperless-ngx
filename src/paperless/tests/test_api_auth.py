@@ -8,6 +8,8 @@ from django.urls import resolve
 from django.urls import reverse
 from rest_framework import status
 
+from paperless.models import ApplicationConfiguration
+
 
 class TestApiAuthViews(TestCase):
     def test_api_auth_login_uses_allauth_login_view(self):
@@ -75,3 +77,46 @@ class TestApiAuthViews(TestCase):
                 else "bootstrap.rtl.min.css"
             )
             self.assertNotContains(response, other_stylesheet)
+
+    def test_auth_page_uses_shift_logo(self):
+        """
+        GIVEN:
+            - The auth page with no custom app logo or title configured
+        WHEN:
+            - The page is loaded in a left-to-right and a right-to-left language
+        THEN:
+            - The Shift brand mark and its title are shown, in the UI language,
+              instead of the Paperless-ngx logo
+        """
+        for language, title in [
+            ("en-us", "Shift - Cloud Archiving"),
+            ("ar-ar", "شفت - للارشفة السحابية"),
+        ]:
+            self.client.cookies.load({settings.LANGUAGE_COOKIE_NAME: language})
+            response = self.client.get(reverse("rest_framework:login"))
+
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+            self.assertContains(response, "shift-logo.png")
+            self.assertContains(response, 'alt="Shift"')
+            self.assertContains(response, title)
+            # the Paperless-ngx wordmark viewBox is no longer rendered here
+            self.assertNotContains(response, "2670 860")
+
+    def test_auth_page_uses_shift_logo_with_app_title(self):
+        """
+        GIVEN:
+            - An app title configured through the application settings
+        WHEN:
+            - The auth page is loaded
+        THEN:
+            - The Shift brand mark is shown instead of the Paperless-ngx leaf
+        """
+        ApplicationConfiguration(app_title="Shift - Cloud Archiving").save()
+
+        response = self.client.get(reverse("rest_framework:login"))
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertContains(response, "shift-logo.png")
+        self.assertContains(response, "Shift - Cloud Archiving")
+        # the Paperless-ngx leaf path is no longer rendered here
+        self.assertNotContains(response, "341,949.1")

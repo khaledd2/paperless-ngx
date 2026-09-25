@@ -2,3 +2,5 @@
 instances/
 # Registry file (contains credentials)
 registry.json
+# Backups (contain documents, database dump, and credentials)
+backups/

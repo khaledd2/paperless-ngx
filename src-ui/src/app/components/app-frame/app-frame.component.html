@@ -9,7 +9,7 @@
     routerLink="/dashboard"
     tourAnchor="tour.intro">
     <img src="assets/logo.png" alt="Logo" style="object-fit: contain; width: 30px; opacity: 0.6;">
-    <div style="margin-inline-end: 10px;" class="d-inline-block" [class.d-md-none]="slimSidebarEnabled">
+    <div style="margin-inline-end: 10px; margin-inline-start: 10px;" class="d-inline-block" [class.d-md-none]="slimSidebarEnabled">
       @if (customAppTitle?.length) {
         <div class="d-flex flex-column align-items-start custom-title">
           <span class="title">{{customAppTitle}}</span>

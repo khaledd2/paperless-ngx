@@ -27,7 +27,10 @@
             <form class="form-accounts" id="form-account" method="post">
                 {% csrf_token %}
                 {% if not APP_LOGO and not APP_TITLE %}
-                    {% include "paperless-ngx/snippets/svg_logo.html" with extra_attrs="width='300' class='logo mb-4'" %}
+                    <img src="{% static 'shift-logo.png' %}" width="120" height="120" class="logo shift-logo mb-2" alt="Shift" />
+                    <h1 class="h4 font-weight-normal text-primary mb-4">
+                        {% if LANGUAGE_CODE|slice:":2" == "ar" %}شفت - للارشفة السحابية{% else %}Shift - Cloud Archiving{% endif %}
+                    </h1>
                 {% else %}
                     {% if APP_LOGO %}
                         <img src="{{APP_LOGO}}" width="300" class="logo mb-1" />
@@ -36,7 +39,7 @@
                         </div>
                     {% else %}
                         <h1 class="font-weight-normal text-primary mb-1 d-flex justify-content-center align-items-start">
-                            {% include "paperless-ngx/snippets/svg_leaf.html" with extra_attrs="width='30' class='mt-2'" %}
+                            <img src="{% static 'shift-logo.png' %}" width="30" height="30" class="shift-logo mt-2" alt="Shift" />
                             <div class="d-flex flex-column align-items-end mb-4">
                                 <span class="ms-2">{{ APP_TITLE }}</span>
                                 <span class="byline text-uppercase font-monospace">by Paperless-ngx</span>

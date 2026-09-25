@@ -11,6 +11,7 @@
 #   ./trial-env.sh start   <org-name>
 #   ./trial-env.sh logs    <org-name> [--follow]
 #   ./trial-env.sh info    <org-name>
+#   ./trial-env.sh backup  <org-name> [--output DIR] [--include-data]
 #
 # Each organization gets a fully isolated Paperless-ngx stack
 # (PostgreSQL + Redis + Paperless) on a unique port.
@@ -34,6 +35,9 @@ DEFAULT_ADMIN_PASSWORD="changeme123"
 # The upstream ghcr.io/paperless-ngx/paperless-ngx image ships the vanilla UI
 # and shows none of the fork's UI changes (logo, RTL, ar-AR bundle, app title).
 PAPERLESS_IMAGE_DEFAULT="paperless-ngx:local"
+
+# Scratch directory for an in-progress backup; an EXIT trap removes it
+BACKUP_STAGING=""
 
 # ─── Colors ──────────────────────────────────────────────────────────────────
 
@@ -135,6 +139,20 @@ env_exists() {
 # Check whether an image is present in the local Docker daemon
 image_exists() {
     docker image inspect "$1" &>/dev/null
+}
+
+# Read a KEY=value out of an instance .env. A missing key yields an empty
+# string instead of tripping `set -e` the way a bare grep pipeline would.
+env_value() {
+    local file="$1"
+    local key="$2"
+    local line
+    line=$(grep -E "^${key}=" "$file" 2>/dev/null || true)
+    printf '%s' "${line#*=}"
+}
+
+container_running() {
+    [[ "$(docker inspect -f '{{.State.Running}}' "$1" 2>/dev/null)" == "true" ]]
 }
 
 # ─── Build provenance ────────────────────────────────────────────────────────
@@ -506,7 +524,7 @@ cmd_update() {
     # Resolve the image recorded for this instance, falling back to the default
     # for instances created before images were tracked in .env
     local image
-    image=$(grep -E '^PAPERLESS_IMAGE=' "${env_dir}/.env" 2>/dev/null | cut -d= -f2-)
+    image=$(env_value "${env_dir}/.env" "PAPERLESS_IMAGE")
     image="${image:-${PAPERLESS_IMAGE_DEFAULT}}"
 
     if [[ "$do_build" == true ]]; then
@@ -592,6 +610,370 @@ cmd_info() {
     echo ""
 }
 
+# ─── Backup ──────────────────────────────────────────────────────────────────
+# A stopped PostgreSQL volume is not a portable backup, so the database dump
+# always comes from the live container. The file volumes are read directly
+# through a throwaway container built from the database image, so a stopped
+# environment can still have its documents archived.
+
+# Ask Compose which Docker volume backs a named volume of an org's stack
+compose_volume_name() {
+    local project="$1"
+    local vol="$2"
+    local matches
+    matches=$(docker volume ls \
+        --filter "label=com.docker.compose.project=${project}" \
+        --filter "label=com.docker.compose.volume=${vol}" \
+        --format '{{.Name}}' 2>/dev/null || true)
+    printf '%s' "${matches%%$'\n'*}"
+}
+
+# Copy a Docker volume's contents onto the host through a throwaway container
+copy_volume_to_host() {
+    local volume="$1"
+    local dest="$2"
+    local image="$3"
+
+    mkdir -p "$dest"
+    docker run --rm \
+        --entrypoint sh \
+        -v "${volume}:/src:ro" \
+        -v "${dest}:/dst" \
+        "$image" \
+        -c 'tar -C /src -cf - . | tar -C /dst -xf -'
+}
+
+dir_kb() {
+    local kb
+    kb=$(du -sk "$1" 2>/dev/null | awk '{print $1}')
+    printf '%s' "${kb:-0}"
+}
+
+human_kb() {
+    local kb="${1:-0}"
+    if [[ "$kb" -ge 1048576 ]]; then
+        awk -v k="$kb" 'BEGIN { printf "%.1f GB", k / 1048576 }'
+    elif [[ "$kb" -ge 1024 ]]; then
+        awk -v k="$kb" 'BEGIN { printf "%.1f MB", k / 1024 }'
+    else
+        printf '%s KB' "$kb"
+    fi
+}
+
+human_size() {
+    local bytes
+    bytes=$(wc -c < "$1" 2>/dev/null || echo 0)
+    human_kb "$(( bytes / 1024 ))"
+}
+
+sha256_of() {
+    if command -v shasum &>/dev/null; then
+        shasum -a 256 "$1" | awk '{print $1}'
+    elif command -v sha256sum &>/dev/null; then
+        sha256sum "$1" | awk '{print $1}'
+    else
+        printf 'unavailable'
+    fi
+}
+
+# Count the members of a tar listing, ignoring AppleDouble '._X' sidecars whose
+# sibling X is itself in the archive. macOS tar invents such sidecars and also
+# drops genuine files that merely start with '._', so a plain count is wrong in
+# both directions. Paperless keeps real data/log/.__*.lock files, which have no
+# 'X' sibling and therefore must still count.
+count_archive_members() {
+    awk '
+        { name = $0; sub(/\/$/, "", name); member[name] = 1; list[NR] = name }
+        END {
+            for (i = 1; i <= NR; i++) {
+                name = list[i]
+                base = name
+                sub(/.*\//, "", base)
+                if (substr(base, 1, 2) == "._") {
+                    prefix = substr(name, 1, length(name) - length(base))
+                    if ((prefix substr(base, 3)) in member) continue
+                }
+                total++
+            }
+            print total + 0
+        }'
+}
+
+cmd_backup() {
+    local org_name=""
+    local output_dir="${SCRIPT_DIR}/backups"
+    local include_data=false
+
+    while [[ $# -gt 0 ]]; do
+        case "$1" in
+            --output)       output_dir="$2"; shift 2 ;;
+            --include-data) include_data=true; shift ;;
+            -*)             die "Unknown option: $1" ;;
+            *)              org_name="$1"; shift ;;
+        esac
+    done
+
+    [[ -z "$org_name" ]] && die "Usage: $0 backup <org-name> [--output DIR] [--include-data]"
+    validate_org_name "$org_name"
+
+    if ! env_exists "$org_name"; then
+        die "Environment for '${org_name}' does not exist."
+    fi
+
+    command -v jq &>/dev/null || die "jq is required. Install it: brew install jq"
+
+    local project="paperless-trial-${org_name}"
+    local db_container="${project}-db"
+    local env_dir="${ENVS_DIR}/${org_name}"
+
+    if ! container_running "$db_container"; then
+        die "Database container '${db_container}' is not running, so there is no live database to dump.
+  Start the environment first:  $0 start ${org_name}"
+    fi
+
+    # Reuse the database image for its tar and sh, so a backup pulls nothing new
+    local helper_image
+    helper_image=$(docker inspect -f '{{.Config.Image}}' "$db_container" 2>/dev/null || true)
+    helper_image="${helper_image:-alpine:3}"
+
+    local port admin_user image
+    port=$(env_value "${env_dir}/.env" "WEB_PORT")
+    admin_user=$(env_value "${env_dir}/.env" "PAPERLESS_ADMIN_USER")
+    image=$(env_value "${env_dir}/.env" "PAPERLESS_IMAGE")
+    image="${image:-${PAPERLESS_IMAGE_DEFAULT}}"
+
+    local port_json="${port:-0}"
+    [[ "$port_json" =~ ^[0-9]+$ ]] || port_json=0
+
+    local timestamp payload created_iso host
+    timestamp=$(date -u '+%Y%m%d-%H%M%S')
+    payload="${org_name}-${timestamp}"
+    created_iso=$(date -u '+%Y-%m-%dT%H:%M:%SZ')
+    host=$(hostname)
+
+    mkdir -p "$output_dir"
+    chmod 700 "$output_dir" 2>/dev/null || true
+
+    # Stage inside the output directory: a host path Docker can bind-mount, and
+    # one that lives under the repo rather than a /var/folders temp dir. Staging
+    # needs free space roughly the size of the data being archived.
+    BACKUP_STAGING=$(mktemp -d "${output_dir}/.staging-${org_name}.XXXXXX")
+    trap 'if [[ -n "${BACKUP_STAGING:-}" ]]; then rm -rf "${BACKUP_STAGING}" || true; fi' EXIT
+
+    local root="${BACKUP_STAGING}/${payload}"
+    mkdir -p "${root}/config"
+
+    echo ""
+    echo -e "${BOLD}${CYAN}━━━ Backing Up: ${org_name} ━━━${NC}"
+    echo ""
+
+    # 1. Database
+    log_info "Dumping PostgreSQL database..."
+    docker exec "$db_container" pg_dump -U paperless -d paperless \
+        --clean --if-exists --no-owner > "${root}/db.sql"
+    if ! grep -q "PostgreSQL database dump complete" "${root}/db.sql" 2>/dev/null; then
+        die "Database dump finished without its completion marker — refusing to write this backup."
+    fi
+    chmod 600 "${root}/db.sql"
+    printf '  %-10s %s\n' "db.sql" "$(human_size "${root}/db.sql")"
+
+    # 2. Instance configuration (secret key, credentials, port, compose file)
+    log_info "Capturing instance configuration..."
+    cp "${env_dir}/.env" "${root}/config/.env"
+    chmod 600 "${root}/config/.env"
+    if [[ -f "${env_dir}/docker-compose.yml" ]]; then
+        cp "${env_dir}/docker-compose.yml" "${root}/config/docker-compose.yml"
+    fi
+    init_registry
+    registry_get "$org_name" > "${root}/config/registry-entry.json"
+
+    # 3. File volumes. redisdata is deliberately never archived: it is cache.
+    local vols="media consume export"
+    if [[ "$include_data" == true ]]; then
+        vols="media consume export data"
+    fi
+
+    : > "${BACKUP_STAGING}/volumes.jsonl"
+    local vol volume kb
+    for vol in $vols; do
+        volume=$(compose_volume_name "$project" "$vol")
+        if [[ -z "$volume" ]]; then
+            log_warn "No '${vol}' volume for '${org_name}' — skipping."
+            continue
+        fi
+        log_info "Archiving volume '${vol}'..."
+        copy_volume_to_host "$volume" "${root}/${vol}" "$helper_image"
+        kb=$(dir_kb "${root}/${vol}")
+        printf '  %-10s %s\n' "${vol}/" "$(human_kb "$kb")"
+        jq -nc --arg name "$vol" --arg volume "$volume" --argjson kb "$kb" \
+            '{name: $name, docker_volume: $volume, size_kb: $kb}' \
+            >> "${BACKUP_STAGING}/volumes.jsonl"
+    done
+
+    # 4. Manifest, so an archive explains itself without the registry
+    local head_rev image_rev image_dirty
+    head_rev=$(current_revision)
+    image_rev=$(image_label "$image" "paperless.fork.revision")
+    image_dirty=$(image_label "$image" "paperless.fork.dirty")
+    jq -n \
+        --arg org_name "$org_name" \
+        --arg created_at "$created_iso" \
+        --arg host "$host" \
+        --argjson web_port "$port_json" \
+        --arg admin_user "${admin_user:-unknown}" \
+        --arg image "$image" \
+        --arg image_revision "$image_rev" \
+        --arg image_dirty "$image_dirty" \
+        --arg head_revision "$head_rev" \
+        --argjson includes_data_volume "$include_data" \
+        --slurpfile volumes "${BACKUP_STAGING}/volumes.jsonl" \
+        '{
+            org_name: $org_name,
+            backup_created_at: $created_at,
+            host: $host,
+            web_port: $web_port,
+            admin_user: $admin_user,
+            image: $image,
+            image_revision: $image_revision,
+            image_dirty: $image_dirty,
+            head_revision: $head_revision,
+            includes_data_volume: $includes_data_volume,
+            volumes: $volumes
+        }' > "${root}/manifest.json"
+
+    if [[ ! -s "${root}/manifest.json" ]]; then
+        die "Failed to write manifest.json (is jq working?)."
+    fi
+
+    # 5. Restore guide, so the archive is not a dead end
+    cat > "${root}/RESTORE.md" <<EOF
+# Restore guide — ${org_name}
+
+Backup taken ${created_iso} UTC on ${host}, from image ${image}
+(revision ${image_rev:-unknown}, uncommitted src/src-ui at build time: ${image_dirty:-unknown}).
+
+## Contents
+
+- db.sql — pg_dump of the 'paperless' database
+- config/.env — instance variables, including PAPERLESS_SECRET_KEY
+- config/docker-compose.yml — the stack definition at backup time
+- config/registry-entry.json — registry.json entry at backup time
+- manifest.json — sizes, image provenance and Docker volume names
+- the volume directories recorded in manifest.json (media, consume, export)
+
+Never archived: redisdata (pure cache); the data volume (search index, ML model,
+logs) unless this backup was taken with --include-data.
+
+## Restore
+
+Restoring overwrites the target environment's database and documents. Do it into
+a fresh environment, never over data you still need.
+
+1. Recreate the instance skeleton (skip if it still exists):
+
+       cd ${SCRIPT_DIR}
+       ./trial-env.sh create ${org_name} --port ${port:-<port>}
+       ./trial-env.sh stop ${org_name}
+
+2. Extract this backup and point BACKUP at it:
+
+       tar -xzf <archive>.tar.gz
+       BACKUP="\$PWD/${payload}"
+
+   On macOS, extract with GNU tar instead: the system tar silently skips
+   members whose names start with ._ (paperless keeps data/log/.__*.lock):
+
+       docker run --rm -v "\$PWD":/work --entrypoint tar ${helper_image} \\
+         -xzf /work/<archive>.tar.gz -C /work
+
+3. Import the database:
+
+       cd ${ENVS_DIR}/${org_name}
+       docker compose --project-name ${project} up -d db
+       docker exec -i ${project}-db psql -U paperless -d paperless < "\$BACKUP/db.sql"
+
+   db.sql was taken with --clean --if-exists, so it drops the objects it
+   recreates. Importing into a database that holds unrelated data destroys it.
+
+4. Copy each file volume back in, swapping media for consume or export (and the
+   volume name to match):
+
+       docker run --rm -v ${project}_media:/dst -v "\$BACKUP/media":/src:ro \\
+         --entrypoint sh ${helper_image} -c 'tar -C /src -cf - . | tar -C /dst -xf -'
+
+   This runs as root, so restored files land owned by root, while the trial
+   webserver runs as uid 1000. If paperless reports that it cannot write a file
+   it restored, hand ownership back:
+
+       docker run --rm -v ${project}_media:/dst --entrypoint chown ${helper_image} -R 1000:1000 /dst
+
+5. Start the environment and hard-refresh the browser:
+
+       cd ${SCRIPT_DIR}
+       ./trial-env.sh start ${org_name}
+EOF
+
+    # 6. One archive, checksummed, and verified before we claim success
+    local archive="${output_dir}/${payload}.tar.gz"
+    log_info "Compressing archive..."
+    # COPYFILE_DISABLE=1 stops macOS tar from treating names starting with '._'
+    # as AppleDouble metadata: without it, paperless's data/log/.__*.lock files
+    # are dropped from the archive without a word. GNU tar ignores this variable.
+    COPYFILE_DISABLE=1 tar -czf "$archive" -C "$BACKUP_STAGING" "$payload"
+    chmod 600 "$archive"
+
+    if ! tar -tzf "$archive" > /dev/null 2>&1; then
+        die "Archive verification failed: '${archive}' is not a readable gzip tarball."
+    fi
+
+    # Completeness check. macOS tar also HIDES '._'-prefixed members when it
+    # lists, so counting with the host tar would happily pass an archive that
+    # lost files. The container's GNU tar is the honest counter, and every
+    # staged member must appear in the archive.
+    local archive_name staged_entries archived_entries
+    archive_name=$(basename "$archive")
+    staged_entries=$(cd "$root" && find . \( -type f -o -type d -o -type l \) -print | wc -l | tr -d ' ')
+    if archived_entries=$(docker run --rm -v "${output_dir}:/bk:ro" --entrypoint tar \
+            "$helper_image" -tzf "/bk/${archive_name}" 2>/dev/null \
+            | count_archive_members); then
+        if [[ "$archived_entries" -ne "$staged_entries" ]]; then
+            die "Archive holds ${archived_entries} members but ${staged_entries} were staged — the archive lost or gained entries, so it is not a faithful backup. Inspect it before relying on it: ${archive}"
+        fi
+    else
+        log_warn "Could not list '${archive_name}' with the container's tar; skipped the completeness check."
+    fi
+
+    local digest
+    digest=$(sha256_of "$archive")
+    printf '%s  %s\n' "$digest" "$(basename "$archive")" > "${archive}.sha256"
+    chmod 600 "${archive}.sha256"
+
+    local archive_size
+    archive_size=$(human_size "$archive")
+
+    # The staged copy is redundant once the archive exists
+    rm -rf "${BACKUP_STAGING}"
+    BACKUP_STAGING=""
+
+    echo ""
+    echo -e "${GREEN}${BOLD}━━━ Backup Complete ━━━${NC}"
+    echo ""
+    echo -e "  ${BOLD}Environment:${NC} ${org_name}"
+    echo -e "  ${BOLD}Archive:${NC}     ${archive}"
+    echo -e "  ${BOLD}Size:${NC}        ${archive_size}"
+    echo -e "  ${BOLD}SHA256:${NC}      ${digest}"
+    echo -e "  ${BOLD}Checksum:${NC}    ${archive}.sha256"
+    echo ""
+    if [[ "$include_data" == false ]]; then
+        echo -e "  ${CYAN}Not archived:${NC} the data/ volume (search index, ML model, logs)."
+        echo -e "               Add ${BOLD}--include-data${NC} to include it; redisdata is cache and never archived."
+    fi
+    echo -e "  ${CYAN}Restore steps:${NC} RESTORE.md inside the archive."
+    echo -e "  ${CYAN}Contains credentials:${NC} keep ${output_dir} private (mode 700)."
+    echo ""
+    log_success "Backup of '${org_name}' written to ${archive}"
+}
+
 cmd_help() {
     echo ""
     echo -e "${BOLD}${CYAN}Paperless-ngx Trial Environment Manager${NC}"
@@ -610,6 +992,7 @@ cmd_help() {
     echo "  stop    <org-name>   Stop a running environment"
     echo "  logs    <org-name>   View logs for an environment"
     echo "  info    <org-name>   Show full connection info for an environment"
+    echo "  backup  <org-name>   Archive an environment's database and files"
     echo ""
     echo -e "${BOLD}CREATE OPTIONS:${NC}"
     echo "  --port PORT          Set specific port (default: auto-assigned from ${PORT_RANGE_START}-${PORT_RANGE_END})"
@@ -621,11 +1004,16 @@ cmd_help() {
     echo -e "${BOLD}DELETE OPTIONS:${NC}"
     echo "  --keep-data          Keep Docker volumes (don't destroy data)"
     echo ""
+    echo -e "${BOLD}BACKUP OPTIONS:${NC}"
+    echo "  --output DIR         Where to write the archive (default: ${SCRIPT_DIR}/backups)"
+    echo "  --include-data       Also archive the data volume (search index, ML model, logs)"
+    echo ""
     echo -e "${BOLD}EXAMPLES:${NC}"
     echo "  $0 create acme-corp"
     echo "  $0 create beta-client --port 8150 --password 's3cur3!'"
     echo "  $0 list"
     echo "  $0 info acme-corp"
+    echo "  $0 backup acme-corp"
     echo "  $0 delete acme-corp"
     echo ""
     echo -e "${BOLD}REQUIREMENTS:${NC}"
@@ -655,6 +1043,7 @@ main() {
         update)  cmd_update "$@" ;;
         logs)    cmd_logs "$@" ;;
         info)    cmd_info "${1:-}" ;;
+        backup)  cmd_backup "$@" ;;
         help|-h|--help) cmd_help ;;
         *)       die "Unknown command: $command. Run '$0 help' for usage." ;;
     esac

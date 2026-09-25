@@ -40,6 +40,9 @@ One-command setup for isolated Paperless-ngx trial environments. Each organizati
 # Refresh an existing env after changing the stack or rebuilding the image
 ./trial-env.sh update acme-corp
 
+# Back up an environment (database + documents) before changing or deleting it
+./trial-env.sh backup acme-corp
+
 # Create, building the fork image first
 ./trial-env.sh create acme-corp --build
 
@@ -57,6 +60,8 @@ trial-envs/
 ├── trial-env.sh                 # Management script
 ├── docker-compose.trial.yml     # Compose template
 ├── registry.json                # Auto-generated: tracks all envs
+├── backups/                     # Auto-generated: backup archives
+│   └── acme-corp-20260922-170000.tar.gz
 └── instances/                   # Auto-generated: per-org configs
     ├── acme-corp/
     │   ├── .env                 # Org-specific variables
@@ -96,6 +101,7 @@ You can also specify a port manually with `--port`.
 | `start <org>` | Start a stopped environment |
 | `stop <org>` | Stop a running environment |
 | `logs <org>` | View environment logs |
+| `backup <org>` | Archive the database and file volumes to `backups/` (see below) |
 
 ## Default Credentials
 
@@ -123,6 +129,50 @@ tree but `src/`/`src-ui/` now has uncommitted changes — so a stale image repor
 itself instead of silently serving old UI. Then hard-refresh the browser, since
 Angular's cached bundles outlive the container.
 
+## Backups
+
+```bash
+./trial-env.sh backup acme-corp                  # -> backups/acme-corp-<UTC timestamp>.tar.gz
+./trial-env.sh backup acme-corp --output /Volumes/backup-drive
+./trial-env.sh backup acme-corp --include-data    # also archive the data volume
+```
+
+`backup` writes one checksummed `.tar.gz` per run plus a `.sha256` sidecar. Inside
+the archive:
+
+- `db.sql` — `pg_dump` of the `paperless` database (plain SQL, `--clean --if-exists`)
+- `media/`, `consume/`, `export/` — dump of the matching Docker volumes
+- `config/.env` — instance variables, including `PAPERLESS_SECRET_KEY`
+- `config/docker-compose.yml`, `config/registry-entry.json` — stack and registry state
+- `manifest.json` — sizes, source revision, and the real Docker volume names
+- `RESTORE.md` — the exact commands to restore this archive
+
+Decisions worth knowing:
+
+- **The `data` volume is not included by default.** It holds the search index, the
+  trained classifier, and logs — all regenerable. Pass `--include-data` if you would
+  rather not wait for a rebuild.
+- **`redisdata` is never included.** It is a cache and means nothing without the
+  database.
+- **The database container must be running.** A stopped PostgreSQL container cannot
+  be dumped, so `backup` tells you to `start` the environment first.
+- **Staging doubles the space briefly.** The archive is assembled in a temporary
+  directory inside the output directory, which needs free space roughly the size of
+  the data being copied.
+- **The dump is taken live.** It is consistent for PostgreSQL, but a document being
+  ingested at that exact moment may be missing its file from `media/`.
+- **Archives contain credentials and client documents.** `backups/` is gitignored
+  and created mode 700; keep copies on encrypted media.
+- **Archives are created with `COPYFILE_DISABLE=1`.** macOS `tar` treats names
+  beginning with `._` as AppleDouble metadata and silently omits them — paperless
+  keeps `data/log/.__celery.lock` and `.__paperless.lock`, so a plain `tar` would drop
+  them from every backup. The same quirk affects *listing and extraction* on macOS,
+  which is why `RESTORE.md` reads and extracts with the container's GNU tar, and why
+  `backup` counts the archive's files with GNU tar rather than the host's.
+
+Restoring is a documented manual procedure (`RESTORE.md` inside each archive), not a
+scripted command, so nothing can overwrite a live environment by accident.
+
 ## Notes
 
 - **The webserver runs the fork image, never upstream.** The compose template uses
@@ -134,4 +184,6 @@ Angular's cached bundles outlive the container.
   instances keep their own copy of the compose file.
 - First startup takes 1-2 minutes for database migrations
 - The `registry.json` file contains passwords — do not commit it
+- Backup archives (`backups/`) contain a database dump and the instance secret key —
+  do not commit or share them
 - Each org uses ~500MB RAM (can be tuned with `PAPERLESS_TASK_WORKERS` etc.)
