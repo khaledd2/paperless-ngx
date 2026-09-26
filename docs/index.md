@@ -71,11 +71,37 @@ with the guides, which are available in **English** and **Arabic**:
   sidebar.
 - [Authentication, users, groups & permissions](authentication.md) — signing in
   and deciding who can see and do what.
+- [Adding documents](documents/adding.md) — uploading, consuming, and what happens
+  while a document is processed.
+- [Browsing, filtering and searching](documents/browsing.md) — the document list
+  and how to narrow it down.
+- [Viewing a document](documents/viewing.md) — the viewer, versions, and
+  downloading.
+- [Editing document details](documents/editing.md) — correcting the title,
+  dates, tags, correspondent, custom fields, and the extracted text.
+- [Notes and history](documents/notes-history.md) — annotating a document and
+  following its changes.
+- [Deleting and restoring documents](documents/trash.md) — the trash and how to
+  get out of it.
+- [Working with many documents at once](documents/bulk.md) — bulk editing,
+  merging, sending, and deleting.
+- [Sharing and permissions](documents/sharing.md) — owners, permissions, share
+  links, and e-mail.
+- [Tags](attributes/tags.md) — colour-coded labels, hierarchies, and automatic
+  matching.
+- [Correspondents](attributes/correspondents.md) — the people and organisations
+  documents come from.
+- [Document types](attributes/document-types.md) — classifying documents by what
+  they are.
+- [Storage paths](attributes/storage-paths.md) — deciding where a document's file
+  is filed inside the archive.
+- [Custom fields](attributes/custom-fields.md) — your own fields for anything the
+  system does not already record.
 
 See the [full list of guides](guides.md) to browse every topic in both
 languages. For the Arabic versions, see [نظرة عامة](overview.ar.md),
-[لوحة المعلومات](dashboard.ar.md), and
-[المصادقة والصلاحيات](authentication.ar.md).
+[لوحة المعلومات](dashboard.ar.md), [المصادقة والصلاحيات](authentication.ar.md),
+and [إضافة المستندات](documents/adding.ar.md).
 
 ## Paperless, a history
 
