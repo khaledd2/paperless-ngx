@@ -1,0 +1,133 @@
+<div class="about-page p-4">
+  <div class="d-flex justify-content-center mb-4">
+    <pngx-logo height="4em"></pngx-logo>
+  </div>
+
+  <div class="text-center mb-4">
+    @if (isArabic) {
+      <h1 class="display-5 fw-bold company-name mb-1">شفت للحلول الرقمية</h1>
+      <p class="lead text-muted mb-0">Shift for Digital Solutions</p>
+    } @else {
+      <h1 class="display-5 fw-bold company-name mb-1">Shift for Digital Solutions</h1>
+      <p class="lead text-muted mb-0">شفت للحلول الرقمية</p>
+    }
+  </div>
+
+  <div class="card about-card shadow-sm mb-4">
+    <div class="card-body">
+      @if (isArabic) {
+        <h2 class="h5 d-flex align-items-center mb-3">
+          <i-bs class="me-2 about-icon" name="info-circle"></i-bs>حول النظام
+        </h2>
+        <p class="mb-0">
+          هذا النظام مُطوَّر ومُدار بالكامل بواسطة <strong>شفت للحلول الرقمية</strong>،
+          ويوفّر حلول أرشفة إلكترونية سحابية متكاملة لإدارة المستندات وتنظيمها والبحث فيها.
+        </p>
+      } @else {
+        <h2 class="h5 d-flex align-items-center mb-3">
+          <i-bs class="me-2 about-icon" name="info-circle"></i-bs>About this system
+        </h2>
+        <p class="mb-0">
+          This system is built and operated by <strong>Shift for Digital Solutions</strong>,
+          providing integrated cloud archiving and document management solutions.
+        </p>
+      }
+    </div>
+  </div>
+
+  <div class="card about-card shadow-sm mb-4">
+    <div class="card-body">
+      @if (isArabic) {
+        <h2 class="h5 d-flex align-items-center mb-3">
+          <i-bs class="me-2 about-icon" name="people"></i-bs>من نحن
+        </h2>
+        <p class="mb-2">
+          «شفت للحلول الرقمية» شركة متخصصة في التحوّل الرقمي وأتمتة العمليات،
+          تقدّم حلولًا سحابية مبتكرة تساعد المنشآت على أرشفة مستنداتها وإدارتها
+          بشكل آمن ومنظّم وقابل للبحث في أي وقت ومن أي مكان.
+        </p>
+        <p class="mb-0 text-muted">
+          نلتزم بتقديم تجربة استخدام بسيطة وموثوقة تلائم احتياجات الأفراد والمنشآت على حدٍّ سواء.
+        </p>
+      } @else {
+        <h2 class="h5 d-flex align-items-center mb-3">
+          <i-bs class="me-2 about-icon" name="people"></i-bs>Who we are
+        </h2>
+        <p class="mb-2">
+          “Shift for Digital Solutions” is a company specialized in digital transformation and
+          process automation. We deliver innovative cloud solutions that help organizations
+          archive and manage their documents securely, in an organized and searchable way,
+          anytime and anywhere.
+        </p>
+        <p class="mb-0 text-muted">
+          We are committed to delivering a simple, reliable experience for individuals and
+          organizations alike.
+        </p>
+      }
+    </div>
+  </div>
+
+  <div class="card about-card shadow-sm mb-4">
+    <div class="card-body">
+      @if (isArabic) {
+        <h2 class="h5 d-flex align-items-center mb-3">
+          <i-bs class="me-2 about-icon" name="journals"></i-bs>مبني على Paperless-ngx
+        </h2>
+        <p class="mb-3">
+          تم بناء هذا النظام على أساس <strong>Paperless-ngx</strong>، وهو نظام مفتوح المصدر
+          مجتمعي لإدارة المستندات وتحويلها إلى أرشيف رقمي قابل للبحث والفهرسة تلقائيًا.
+        </p>
+        <div class="d-flex flex-wrap gap-2">
+          <a class="btn btn-sm btn-outline-primary" target="_blank" rel="noopener noreferrer"
+            href="https://github.com/paperless-ngx/paperless-ngx">
+            <i-bs class="me-1" name="box-arrow-up-right"></i-bs>GitHub
+          </a>
+          <a class="btn btn-sm btn-outline-primary" target="_blank" rel="noopener noreferrer"
+            href="https://docs.paperless-ngx.com">
+            <i-bs class="me-1" name="question-circle"></i-bs>التوثيق
+          </a>
+        </div>
+      } @else {
+        <h2 class="h5 d-flex align-items-center mb-3">
+          <i-bs class="me-2 about-icon" name="journals"></i-bs>Built on Paperless-ngx
+        </h2>
+        <p class="mb-3">
+          This system is based on <strong>Paperless-ngx</strong>, an open-source,
+          community-driven document management system that turns your physical documents
+          into a searchable, automatically indexed digital archive.
+        </p>
+        <div class="d-flex flex-wrap gap-2">
+          <a class="btn btn-sm btn-outline-primary" target="_blank" rel="noopener noreferrer"
+            href="https://github.com/paperless-ngx/paperless-ngx">
+            <i-bs class="me-1" name="box-arrow-up-right"></i-bs>GitHub
+          </a>
+          <a class="btn btn-sm btn-outline-primary" target="_blank" rel="noopener noreferrer"
+            href="https://docs.paperless-ngx.com">
+            <i-bs class="me-1" name="question-circle"></i-bs>Documentation
+          </a>
+        </div>
+      }
+    </div>
+  </div>
+
+  <div class="text-center text-muted small">
+    {{ versionString }}
+    <span class="mx-2">·</span>
+    @if (isArabic) {
+      <span>مبني على Paperless-ngx مفتوح المصدر</span>
+    } @else {
+      <span>Built on open-source Paperless-ngx</span>
+    }
+  </div>
+
+  <div class="text-center mt-4">
+    <a class="btn btn-primary" routerLink="/dashboard">
+      <i-bs width="1.2em" height="1.2em" name="house" class="me-1"></i-bs>
+      @if (isArabic) {
+        <span>الانتقال إلى لوحة التحكم</span>
+      } @else {
+        <span>Go to Dashboard</span>
+      }
+    </a>
+  </div>
+</div>

@@ -195,6 +195,10 @@ export class AppFrameComponent
       : 'Shift - Cloud Archiving'
   }
 
+  get aboutLabel(): string {
+    return this.localeId.startsWith('ar') ? 'حول النظام' : 'About'
+  }
+
   get canSaveSettings(): boolean {
     return (
       this.permissionsService.currentUserCan(

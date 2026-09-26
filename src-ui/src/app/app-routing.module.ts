@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core'
 import { RouterModule, Routes } from '@angular/router'
+import { AboutComponent } from './components/about/about.component'
 import { ConfigComponent } from './components/admin/config/config.component'
 import { LogsComponent } from './components/admin/logs/logs.component'
 import { SettingsComponent } from './components/admin/settings/settings.component'
@@ -308,6 +309,13 @@ export const routes: Routes = [
             type: PermissionType.SavedView,
           },
           componentName: 'SavedViewsComponent',
+        },
+      },
+      {
+        path: 'about',
+        component: AboutComponent,
+        data: {
+          componentName: 'AboutComponent',
         },
       },
     ],
