@@ -61,6 +61,22 @@ physical documents into a searchable online archive so you can keep, well, _less
 
 [^1]: Office document and email consumption support is optional and provided by Apache Tika (see [configuration](https://docs.paperless-ngx.com/configuration/#tika))
 
+## User Guides
+
+New to Paperless-ngx, or want a friendly walkthrough of the interface? Start
+with the guides, which are available in **English** and **Arabic**:
+
+- [Overview](overview.md) — what Paperless-ngx is and the concepts behind it.
+- [Dashboard & navigation](dashboard.md) — the dashboard, the top bar, and the
+  sidebar.
+- [Authentication, users, groups & permissions](authentication.md) — signing in
+  and deciding who can see and do what.
+
+See the [full list of guides](guides.md) to browse every topic in both
+languages. For the Arabic versions, see [نظرة عامة](overview.ar.md),
+[لوحة المعلومات](dashboard.ar.md), and
+[المصادقة والصلاحيات](authentication.ar.md).
+
 ## Paperless, a history
 
 Paperless-ngx is the official successor to the original [Paperless](https://github.com/the-paperless-project/paperless) & [Paperless-ng](https://github.com/jonaswinkler/paperless-ng) projects and is designed to distribute the responsibility of advancing and supporting the project among a team of people. [Consider joining us!](https://github.com/paperless-ngx/paperless-ngx#community-support)

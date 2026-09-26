@@ -17,7 +17,7 @@ automation, sharing, and administration.
 
 ## Conventions
 
-Follow the `paperless-docs` skill at `skills/paperless-docs/SKILL.md`:
+Follow the `paperless-docs` skill at `.cline/skills/doc.md`:
 
 - **Two files per topic**, same structure:
   - `docs/<topic>.md` (English)
@@ -34,15 +34,16 @@ Follow the `paperless-docs` skill at `skills/paperless-docs/SKILL.md`:
 
 ### 0. Foundation
 
-- [x] **Authentication, users, groups & permissions** — EN + AR. Currently
-  saved as `docs/permissions.md` and `docs/permissions.ar.md`; rename to
-  `authentication.*` to match the wider scope.
+- [x] **Authentication, users, groups & permissions** — EN + AR. Files are
+  `docs/authentication.md` and `docs/authentication.ar.md` (renamed from
+  `permissions.*` to match the wider scope).
 
 ### 1. Getting started
 
-- [ ] `overview` — What is Paperless-ngx: concepts (documents, tags,
+- [x] `overview` — What is Paperless-ngx: concepts (documents, tags,
   correspondents, document types, storage paths, custom fields, saved views).
-- [ ] `dashboard` — The dashboard and navigating the interface.
+  EN + AR.
+- [x] `dashboard` — The dashboard and navigating the interface. EN + AR.
 
 ### 2. Documents (core lifecycle)
 
@@ -104,5 +105,6 @@ Follow the `paperless-docs` skill at `skills/paperless-docs/SKILL.md`:
 
 ## Index / navigation
 
-- Create a documentation index that lists every topic and links its English and
-  Arabic pages (e.g. a dedicated section or `docs/index.md` update).
+- [x] Created `docs/guides.md` as the documentation index: it lists every topic
+  and links its English and Arabic pages. It is linked from `docs/index.md` and
+  added to the `nav` in `zensical.toml` under **User Guides**.
