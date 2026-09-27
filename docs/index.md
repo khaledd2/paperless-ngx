@@ -103,6 +103,22 @@ with the guides, which are available in **English** and **Arabic**:
   arrives, with triggers and actions.
 - [Mail](mail.md) — importing documents from an e-mail account, and the rules
   that decide what happens to the messages.
+- [Settings](admin/settings.md) — the appearance, document, permission and
+  notification options that each person chooses for their own account.
+- [System status](admin/system-status.md) — the health report of the
+  installation, and how to read it.
+- [Logs](admin/logs.md) — reading the application, mail and background-worker
+  logs when something goes wrong.
+- [Tasks](admin/tasks.md) — monitoring what the system was asked to do, and what
+  came of it.
+- [Backup and restore](admin/backup.md) — what a complete backup has to contain,
+  and what is not a backup.
+- [AI features](ai.md) — the chat that answers questions about your documents, and
+  the suggestions it can make while you file them.
+- [Barcodes and ASN](barcodes-asn.md) — writing a number on the paper, reading it
+  back from a printable barcode, and splitting a stack of scans into documents.
+- [The consume folder](consume-folder.md) — the watched folder that imports files
+  by itself, and how to work with it.
 
 See the [full list of guides](guides.md) to browse every topic in both
 languages. For the Arabic versions, see [نظرة عامة](overview.ar.md),

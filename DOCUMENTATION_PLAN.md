@@ -106,19 +106,56 @@ Delivered as pages at the root of `docs/`, English and Arabic, and listed in
   Gmail/Outlook sign-ins), **Mail rules** (criteria, consumption, action and
   metadata), **Processed Mail**. EN + AR.
 
-### 5. Administration & monitoring
+### 5. Administration & monitoring — **done**
 
-- [ ] `settings` — Application settings.
-- [ ] `system-status` — System status, statistics, and monitoring.
-- [ ] `logs` — Logs.
-- [ ] `tasks` — Task monitoring.
-- [ ] `backup` — Export and import (if applicable to the target audience).
+Delivered as nested pages under `docs/admin/`, English and Arabic, and listed in
+`docs/guides.md`, `docs/index.md`, and the **Administration & Monitoring** group
+of the `nav` in `zensical.toml`.
 
-### 6. Optional / advanced
+- [x] `settings` — Application settings: the page header (**Start tour**,
+  **System Status**, **Open Django Admin**) and the four tabs **General**,
+  **Documents**, **Permissions**, **Notifications**, with **Save** / **Cancel**.
+  EN + AR.
+- [x] `system-status` — System status and monitoring: the four cards
+  **Environment**, **Database**, **Tasks Queue**, **Health**, the **Run Task**
+  buttons, and **Copy**. EN + AR.
+- [x] `logs` — Logs: the **paperless.log** / **mail.log** / **celery.log** tabs,
+  **Show … lines**, **Auto refresh**, **Jump to bottom**, and how lines are
+  marked **DEBUG** / **WARNING** / **ERROR** / **CRITICAL**. EN + AR.
+- [x] `tasks` — Task monitoring: the sections **All**, **Needs attention**,
+  **In progress**, **Recently completed**, the type and source filters, the
+  **Name** / **Created** / **Results** / **Info** / **Actions** columns, the
+  detail panels, and **Dismiss visible** / **Dismiss selected**. EN + AR.
+- [x] `backup` — Export and import: what a complete backup must contain, the
+  three ways to back up, the built-in exporter and importer, what is not a
+  backup, and how a restore goes. It stays applicable to the target audience by
+  describing the export and import tools in plain language as work done outside
+  the web interface, with no commands. EN + AR.
 
-- [ ] `ai` — AI features (chat and document suggestions).
-- [ ] `barcodes-asn` — Barcodes and ASN (archive serial number).
-- [ ] `consume-folder` — Document consumption (consume folder).
+### 6. Optional / advanced — **done**
+
+Delivered as pages at the root of `docs/`, English and Arabic, and listed in
+`docs/guides.md`, `docs/index.md`, and the **Optional & Advanced** group of the
+`nav` in `zensical.toml`.
+
+- [x] `ai` — AI features: the chat in the top bar (its button, the two prompts
+  **Ask a question about a document...** and **Ask a question about this
+  document...**, **Send**, the streamed answer and its document links), and the
+  **Suggest** / **Show suggestions** flow in the document details, including
+  **Tags** / **Document Types** / **Correspondents** / **No novel suggestions**.
+  The AI index, the **AI Settings** cards on the **Configuration** page, and the
+  privacy and cost warnings. EN + AR.
+- [x] `barcodes-asn` — Barcodes and ASN: the archive serial number (where it
+  appears, the **+1** button, the **ASN** column, filter target and sorting), the
+  uniqueness rule and the blocked import it causes, reading a number from a
+  barcode (prefix, retained page), separator barcodes and **Retain Split Pages**,
+  tag barcodes and **Split on Tag Barcodes**, and the **Barcode Settings** cards.
+  EN + AR.
+- [x] `consume-folder` — Document consumption: the watched folder, the ways files
+  reach it, the formats it accepts, the housekeeping files it ignores, subfolders
+  and subfolders-as-tags, the four steps a file goes through, the duplicate rule,
+  what a failed import looks like, healthy habits, and the administrator-side
+  choices described in plain language. EN + AR.
 
 ## Suggested order (phases)
 
@@ -126,8 +163,8 @@ Delivered as pages at the root of `docs/`, English and Arabic, and listed in
 2. **Core document lifecycle** — done (section 2 above).
 3. **Organizing attributes** — done (section 3 above).
 4. **Automation** — done (section 4 above).
-5. **Administration & monitoring**.
-6. **Optional / advanced**.
+5. **Administration & monitoring** — done (section 5 above).
+6. **Optional / advanced** — done (section 6 above).
 
 ## Definition of done (per topic)
 
@@ -200,6 +237,82 @@ repository, so that every quoted label is a real label.
   selected**). The `{{…}}` values used in the workflow examples are placeholders
   the application itself offers for titles and messages, and the page says which
   of them work with every trigger type.
+- **Section 5 — Administration & monitoring (5 topics, 10 files):** EN and AR
+  pages mirror each other heading for heading; each page ends with a quick
+  example (or, for **backup**, **A quick example** after the worked restore
+  discussion); and the same no-leak rule holds — no environment variables,
+  class names, or source paths, no commands, and no code blocks. Every quoted
+  label was checked against the Angular templates: the **Settings** page
+  (**Start tour**, **System Status**, **Open Django Admin**, the **General** /
+  **Documents** / **Permissions** / **Notifications** tabs with **Display
+  language**, **Date display**, **Date format** — **Short** / **Medium** /
+  **Long** — **Use 'slim' sidebar (icons only)**, **Use system settings**,
+  **Enable dark mode**, **Invert thumbnails in dark mode**, **Theme Color** with
+  **Reset**, **Global search** with **Do not include advanced search results**
+  and **Full search links to** (**Title and content search** / **Advanced
+  search**), **Update checking**, **Saved Views**, **Items per page**,
+  **Document editing** with **Use PDF viewer provided by the browser**,
+  **Default zoom** (**Fit width** / **Fit page**), **Automatically remove inbox
+  tag(s) on save**, **Show document thumbnail during loading**, **Built-in
+  fields to show**, **Bulk editing**, **PDF Editor** (**Create new document(s)**
+  / **Add document version**), **Notes**, **Default Owner**, **Default View
+  Permissions**, **Default Edit Permissions**, and the four **Document
+  processing** notification switches); the **System Status** dialog
+  (**Environment**, **Database**, **Tasks Queue**, **Health**, **Paperless-ngx
+  Version**, **Install Type**, **Server OS**, **Media Storage**, **Migration
+  Status** with **Up to date** / **Pending**, **Redis Status**, **Celery
+  Status**, **Recent Task Activity** with **Total** / **Successful** / **Failed**
+  / **Pending** and **No recent tasks**, **Search Index** with **Last Updated**,
+  **Classifier** with **Last Trained**, **Sanity Checker** with **Last Run**,
+  **WebSocket Connection**, **AI Index**, **Run Task**, and **Copy**); the
+  **Logs** page (**Show** / **lines**, **Auto refresh**, **Jump to bottom**,
+  **Loading...**, and the **paperless.log** / **mail.log** / **celery.log** tab
+  names, which are the labels the app itself renders); and the **Tasks** page
+  (**All**, **Needs attention**, **In progress**, **Recently completed**,
+  **Filter by** with **All types** / **All sources** and the type and source
+  lists, the **Name** / **Result** search target, **Reset filters**, **Auto
+  refresh**, **Clear selection**, **Dismiss visible** / **Dismiss selected**,
+  **Confirm Dismiss** with *Dismiss N tasks?*, **No tasks match the current
+  filters.**, the **Name** / **Created** / **Results** / **Info** / **Actions**
+  columns, **Open Document**, and the **Result message** / **Duplicate** /
+  **Input data** / **Result data** detail panels). The **backup** page names its
+  three storage areas and the export and import tools in plain language only —
+  the tool names come from `docs/administration.md` (the *document exporter* and
+  the *document importer*) and no command, path, or environment variable is
+  reproduced, and the same-version rule, the missing API tokens, the
+  incremental behaviour, the data-only variant, and the empty-installation
+  requirement all come from that page. Both **Logs** and **Tasks** permission
+  notes match the app: **Logs** is shown to administrators only, and **Tasks**
+  is shown to anyone with view permission on tasks.
+- **Section 6 — Optional / advanced (3 topics, 6 files):** EN and AR pages mirror
+  each other heading for heading and each ends with **A quick example**; the
+  no-leak rule holds — no environment variables, class names, source paths, or
+  commands. Every quoted label was checked against the Angular templates and the
+  development data file: the chat (**Send**, **Ask a question about a
+  document...**, **Ask a question about this document...**, the **Error receiving
+  response.** line, and the document links under an answer), the suggestions
+  (**Suggest**, **Show suggestions**, **Tags**, **Document Types**,
+  **Correspondents**, **No novel suggestions**, **Error retrieving
+  suggestions.**), the document fields (**Archive serial number**, the **+1**
+  button, the **ASN** column, **Sort by ASN**, and the **equals** / **is empty** /
+  **is not empty** / **greater than** / **less than** ASN filter), the two
+  administration tabs (**Barcode Settings**: **Enable Barcodes**, **Enable TIFF
+  Support**, **Barcode String**, **Retain Split Pages**, **Enable ASN**, **ASN
+  Prefix**, **Enable Tag Detection**, **Tag Mapping**, **Split on Tag Barcodes**,
+  **Upscale**, **DPI**, **Max Pages**; **AI Settings**: **AI Enabled**, **LLM
+  Backend**, **LLM Model**, **LLM API Key**, **LLM Endpoint**, **LLM Embedding
+  Backend**, **LLM Embedding Model**), and the shared **Configuration** page
+  frame (**Reset**, **Save**, **Cancel**, and the note about applying to every
+  user). The barcode behaviour (split after the separator page, the retained page
+  for ASN and tag barcodes, the `TAG:` pattern, the `ASN00123`-style prefix rule,
+  and the uniqueness of an ASN, including against the **Trash**) comes from
+  `docs/advanced_usage.md`, `docs/configuration.md`, and `docs/usage.md`; the
+  consume-folder behaviour (the stability wait, the supported-format filter, the
+  ignored housekeeping files, subfolders as tags, the removal of the file after a
+  successful import, and the duplicate rule) comes from the consumer in
+  `src/documents/` and those same pages. Neither page names a file path, a
+  setting name as an environment variable, or a command: the consume folder's
+  administrator section describes the choices in plain language only.
 
 ## Index / navigation
 
@@ -220,4 +333,18 @@ repository, so that every quoted label is a real label.
   **Manage** section of the sidebar, where the three pages live — with matching
   rows in both tables of `docs/guides.md` and matching bullets in
   `docs/index.md`.
-
+- [x] Section 5 added a nested **Administration & Monitoring** group to the
+  `nav`, holding `settings`, `system-status`, `logs`, `tasks`, and `backup` in
+  reading order, with matching rows in both tables of `docs/guides.md` and
+  matching bullets in `docs/index.md`. The group is named **Administration &
+  Monitoring** rather than **Administration** so that it does not read like the
+  separate top-level **Administration** entry, which still holds
+  `administration.md` and the migration guide.
+- [x] Section 6 added an **Optional & Advanced** group to the `nav`, holding
+  `ai`, `barcodes-asn`, and `consume-folder` in the order of the roadmap, with
+  matching rows in both tables of `docs/guides.md` and matching bullets in
+  `docs/index.md`. Smaller cross-links were added while doing so: the watched
+  folder in `documents/adding`, the **Archive serial number** row in
+  `documents/editing`, the AI assistant button in `dashboard`, and the **AI
+  Index** row in `admin/system-status` now point at the new pages, in both
+  languages.

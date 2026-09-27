@@ -42,6 +42,18 @@ nav = [
       "workflows.md",
       "mail.md",
     ] },
+    { "Administration & Monitoring" = [
+      "admin/settings.md",
+      "admin/system-status.md",
+      "admin/logs.md",
+      "admin/tasks.md",
+      "admin/backup.md",
+    ] },
+    { "Optional & Advanced" = [
+      "ai.md",
+      "barcodes-asn.md",
+      "consume-folder.md",
+    ] },
   ] },
   "setup.md",
   "usage.md",

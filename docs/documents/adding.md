@@ -36,7 +36,9 @@ dashboard.
 If your installation uses a watched folder (sometimes called the *consume
 folder*), any file that lands in it is imported automatically. This is the usual
 way to bring in documents from a scanner. You do not need to sign in for this;
-your administrator decides where the folder is and who can write to it.
+your administrator decides where the folder is and who can write to it. See
+[The Consume Folder](../consume-folder.md) for how the folder behaves and what to
+do when a file is refused.
 
 ### By e-mail
 

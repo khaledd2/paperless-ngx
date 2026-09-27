@@ -29,6 +29,14 @@ between them.
 | **Saved views** — keeping a set of filters as a named view, and showing it in the sidebar or on the dashboard. | [Read](saved-views.md) | [اقرأ](saved-views.ar.md) |
 | **Workflows** — automating the document pipeline with triggers and actions. | [Read](workflows.md) | [اقرأ](workflows.ar.md) |
 | **Mail** — importing documents from e-mail: accounts, rules, and processed mail. | [Read](mail.md) | [اقرأ](mail.ar.md) |
+| **Settings** — the appearance, document, permission and notification options that each person chooses for their own account. | [Read](admin/settings.md) | [اقرأ](admin/settings.ar.md) |
+| **System status** — the health report of the installation: environment, database, task queue, and health checks. | [Read](admin/system-status.md) | [اقرأ](admin/system-status.ar.md) |
+| **Logs** — reading the application, mail and background-worker logs when something goes wrong. | [Read](admin/logs.md) | [اقرأ](admin/logs.ar.md) |
+| **Tasks** — monitoring what the system was asked to do: sections, filters, results, and dismissing tasks. | [Read](admin/tasks.md) | [اقرأ](admin/tasks.ar.md) |
+| **Backup and restore** — what a complete backup must contain, the built-in export and import, and what is not a backup. | [Read](admin/backup.md) | [اقرأ](admin/backup.ar.md) |
+| **AI features** — the chat in the top bar that answers questions about your documents, and AI-assisted suggestions, with the options administrators control. | [Read](ai.md) | [اقرأ](ai.ar.md) |
+| **Barcodes and ASN** — the archive serial number, reading numbers and separators from printed barcodes, and splitting a stack of scans. | [Read](barcodes-asn.md) | [اقرأ](barcodes-asn.ar.md) |
+| **The consume folder** — the folder the installation watches: how files get in, what it accepts, subfolders as tags, and what a failed import looks like. | [Read](consume-folder.md) | [اقرأ](consume-folder.ar.md) |
 
 !!! note
 
@@ -63,6 +71,14 @@ between them.
 | **العروض المحفوظة** — حفظ مجموعة مرشّحات في عرض مُسمّى، وإظهاره في الشريط الجانبي أو على لوحة المعلومات. | [Read](saved-views.md) | [اقرأ](saved-views.ar.md) |
 | **سير العمل** — أتمتة مسار معالجة المستند بالمُشغّلات والإجراءات. | [Read](workflows.md) | [اقرأ](workflows.ar.md) |
 | **البريد** — استيراد المستندات من البريد الإلكتروني: الحسابات والقواعد والبريد المعالَج. | [Read](mail.md) | [اقرأ](mail.ar.md) |
+| **الإعدادات** — خيارات المظهر والمستندات والصلاحيات والإشعارات التي يختارها كل شخص لحسابه. | [Read](admin/settings.md) | [اقرأ](admin/settings.ar.md) |
+| **حالة النظام** — تقرير صحة التثبيت: البيئة وقاعدة البيانات وقائمة المهام وفحوص الصحة. | [Read](admin/system-status.md) | [اقرأ](admin/system-status.ar.md) |
+| **السجلات** — قراءة سجلات التطبيق والبريد والعمّال في الخلفية عند وقوع خطأ. | [Read](admin/logs.md) | [اقرأ](admin/logs.ar.md) |
+| **المهام** — متابعة ما طُلب من النظام فعله: الأقسام والمرشّحات والنتائج وإخفاء المهام. | [Read](admin/tasks.md) | [اقرأ](admin/tasks.ar.md) |
+| **النسخ الاحتياطي والاستعادة** — ما يجب أن تشمله النسخة الكاملة، والتصدير والاستيراد المدمجان، وما ليس نسخًا احتياطيًا. | [Read](admin/backup.md) | [اقرأ](admin/backup.ar.md) |
+| **ميزات الذكاء الاصطناعي** — المحادثة في الشريط العلوي التي تجيب عن أسئلتك حول مستنداتك، والاقتراحات المعزّزة بالذكاء الاصطناعي، مع الخيارات التي يضبطها المدراء. | [Read](ai.md) | [اقرأ](ai.ar.md) |
+| **الباركود ورقم ASN** — رقم التسلسل الأرشيفي، وقراءة الأرقام والفاصل من الباركودات المطبوعة، وفصل رزمة المسوحات. | [Read](barcodes-asn.md) | [اقرأ](barcodes-asn.ar.md) |
+| **مجلّد المعالجة** — المجلّد الذي يراقبه التثبيت: كيف تصل الملفات إليه، وما يقبله، والمجلّدات الفرعية كوسوم، وكيف يبدو الاستيراد الفاشل. | [Read](consume-folder.md) | [اقرأ](consume-folder.ar.md) |
 
 !!! note
 

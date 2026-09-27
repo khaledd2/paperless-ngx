@@ -22,7 +22,7 @@ document as a whole, so a correction applies to all of its versions:
 | Field | What it holds |
 | --- | --- |
 | **Title** | The name you will search by. Start here when a scan arrives with a long filename. |
-| **Archive serial number** | The number you would write on the paper original — see [Barcodes and ASN](../usage.md). |
+| **Archive serial number** | The number you would write on the paper original — see [Barcodes and ASN](../barcodes-asn.md). |
 | **Created** | The date printed on the document itself. |
 | **Added** | The date the file entered Paperless-ngx. It is set for you. |
 | **Tags** | What the document is, so it can be filtered later. |

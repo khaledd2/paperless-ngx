@@ -19,6 +19,7 @@ to right it contains:
 - **Search** — the global search box, described below.
 - **The AI assistant button** — appears only if an administrator has turned on
   the AI features. It opens a chat you can ask questions about your documents.
+  See [AI Features](ai.md).
 - **Notifications** — a bell-shaped button that shows background events and
   messages, such as documents that have finished being processed or errors that
   need your attention.
