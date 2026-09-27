@@ -1,0 +1,721 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Paperless-ngx — User Guides</title>
+  <style>
+    :root {
+      --bg: #f4f7f5;
+      --surface: #ffffff;
+      --surface-2: #edf2ef;
+      --border: #dbe3de;
+      --text: #20332a;
+      --muted: #5b6c63;
+      --primary: #2e7d32;
+      --primary-strong: #1b5e20;
+      --primary-soft: #e5f1e6;
+      --on-primary: #ffffff;
+      --code-bg: #eef2f0;
+      --code-border: #dde5e0;
+      --link: #2e7d32;
+      --shadow: 0 1px 3px rgba(16, 40, 26, 0.10);
+      --shadow-lg: 0 8px 24px rgba(16, 40, 26, 0.16);
+      --note-bg: #e8f2fb; --note-border: #3d7fb0; --note-fg: #1f3a4d;
+      --tip-bg: #e7f4e9;  --tip-border: #2e7d32;  --tip-fg: #1f3a2a;
+      --warn-bg: #fdf3e0; --warn-border: #d89b2f; --warn-fg: #5c4513;
+      --danger-bg: #fdeaea; --danger-border: #c84444; --danger-fg: #5c1f1f;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #121814;
+        --surface: #1a231d;
+        --surface-2: #202a23;
+        --border: #2c382f;
+        --text: #e6ece8;
+        --muted: #a7b3ab;
+        --primary: #66bb6a;
+        --primary-strong: #81c784;
+        --primary-soft: #1d2e20;
+        --on-primary: #0f1a11;
+        --code-bg: #222c25;
+        --code-border: #2e3a32;
+        --link: #81c784;
+        --shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+        --shadow-lg: 0 10px 28px rgba(0, 0, 0, 0.5);
+        --note-bg: #14262f; --note-border: #4f97c6; --note-fg: #d3e7f3;
+        --tip-bg: #15281a;  --tip-border: #66bb6a;  --tip-fg: #d4ecd7;
+        --warn-bg: #2b2413; --warn-border: #d8ab4f; --warn-fg: #f3e4c0;
+        --danger-bg: #2b1717; --danger-border: #d95a5a; --danger-fg: #f3d3d3;
+      }
+    }
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      font-size: 16px;
+      line-height: 1.65;
+    }
+    .app { display: flex; flex-direction: column; min-height: 100vh; }
+    .topbar {
+      position: sticky; top: 0; z-index: 40;
+      display: flex; align-items: center; gap: 12px;
+      padding: 10px 16px;
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      box-shadow: var(--shadow);
+    }
+    .brand { display: flex; align-items: center; gap: 10px; margin-right: 4px; }
+    .brand-logo { width: 26px; height: 26px; color: var(--primary); flex: none; }
+    .brand-name { font-weight: 700; font-size: 17px; letter-spacing: .2px; }
+    .brand-sub { color: var(--muted); font-size: 13px; display: block; line-height: 1.1; }
+    .search-wrap {
+      position: relative; flex: 1; max-width: 520px; margin-left: auto; margin-right: auto;
+    }
+    .search-wrap svg { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); width: 16px; height: 16px; color: var(--muted); }
+    .search-wrap input {
+      width: 100%; padding: 9px 12px 9px 36px;
+      border: 1px solid var(--border); border-radius: 999px;
+      background: var(--surface-2); color: var(--text); font-size: 14.5px;
+      outline: none; transition: border-color .15s, box-shadow .15s;
+    }
+    .search-wrap input:focus { border-color: var(--primary); box-shadow: 0 0 0 3px var(--primary-soft); }
+    .lang-toggle { display: flex; background: var(--surface-2); border: 1px solid var(--border); border-radius: 999px; overflow: hidden; flex: none; }
+    .lang-toggle button {
+      border: 0; background: transparent; color: var(--muted);
+      padding: 8px 14px; font-size: 13.5px; font-weight: 600; cursor: pointer;
+    }
+    .lang-toggle button.active { background: var(--primary); color: var(--on-primary); }
+    .icon-btn { display: none; border: 0; background: transparent; color: var(--text); cursor: pointer; padding: 6px; border-radius: 8px; }
+    .icon-btn:hover { background: var(--surface-2); }
+    .icon-btn svg { width: 22px; height: 22px; display: block; }
+
+    /* layout */
+    .layout { display: flex; flex: 1; min-height: 0; }
+    .sidebar {
+      width: 300px; flex: none; background: var(--surface);
+      border-inline-end: 1px solid var(--border);
+      overflow-y: auto; position: sticky; top: 57px; height: calc(100vh - 57px);
+    }
+    .sidebar-scroll { padding: 12px 10px 48px; }
+    .nav-item {
+      display: flex; align-items: center; gap: 8px;
+      padding: 8px 10px; border-radius: 8px;
+      color: var(--text); text-decoration: none; font-size: 14px;
+      cursor: pointer; border-inline-start: 3px solid transparent;
+    }
+    .nav-item:hover { background: var(--surface-2); }
+    .nav-item.active { background: var(--primary-soft); color: var(--primary-strong); font-weight: 600; border-inline-start-color: var(--primary); }
+    .nav-item.home { font-weight: 700; margin-bottom: 8px; }
+    .nav-item .nav-label { line-height: 1.35; }
+    .nav-section { margin: 4px 0; }
+    .nav-section-header {
+      display: flex; align-items: center; justify-content: space-between; gap: 8px;
+      width: 100%; padding: 9px 10px; border: 0; background: transparent;
+      color: var(--muted); font-size: 12px; font-weight: 700; text-transform: uppercase;
+      letter-spacing: .5px; cursor: pointer; text-align: inherit; border-radius: 8px;
+    }
+    .nav-section-header:hover { background: var(--surface-2); }
+    .nav-section-title { flex: 1; }
+    .chevron { transition: transform .15s; font-size: 10px; }
+    .nav-section.collapsed .chevron { transform: rotate(-90deg); }
+    .nav-section.collapsed .nav-section-body { display: none; }
+    .nav-section-body .nav-item { padding-inline-start: 22px; }
+
+    /* content */
+    .content-wrap { flex: 1; min-width: 0; display: flex; justify-content: center; }
+    .content { width: 100%; max-width: 860px; padding: 32px 40px 96px; min-width: 0; }
+    .content h1 { font-size: 30px; line-height: 1.2; margin: 0 0 18px; letter-spacing: -.3px; }
+    .content h2 { font-size: 22px; margin: 40px 0 14px; padding-bottom: 6px; border-bottom: 1px solid var(--border); }
+    .content h3 { font-size: 17px; margin: 28px 0 10px; }
+    .content p { margin: 14px 0; }
+    .content a { color: var(--link); text-decoration: none; }
+    .content a:hover { text-decoration: underline; }
+    .content a.ext::after { content: " \2197 "; font-size: .8em; opacity: .7; }
+    .content code {
+      font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+      background: var(--code-bg); border: 1px solid var(--code-border);
+      border-radius: 5px; padding: 1px 6px; font-size: .88em;
+    }
+    .content pre {
+      background: var(--code-bg); border: 1px solid var(--code-border);
+      border-radius: 8px; padding: 14px 16px; overflow-x: auto;
+    }
+    .content pre code { background: transparent; border: 0; padding: 0; font-size: 13.5px; }
+    .content hr { border: 0; border-top: 1px solid var(--border); margin: 32px 0; }
+    .table-wrap { overflow-x: auto; margin: 16px 0; border: 1px solid var(--border); border-radius: 8px; }
+    .content table { border-collapse: collapse; width: 100%; font-size: 14.5px; }
+    .content th, .content td { text-align: start; padding: 10px 14px; border-bottom: 1px solid var(--border); vertical-align: top; }
+    .content thead th { background: var(--surface-2); font-weight: 700; }
+    .content tbody tr:last-child td { border-bottom: 0; }
+    .content tbody tr:nth-child(even) td { background: var(--surface-2); }
+    .content ul, .content ol { margin: 12px 0; padding-inline-start: 26px; }
+    .content li { margin: 5px 0; }
+    .content li > p { margin: 5px 0; }
+
+    /* admonitions */
+    .admonition { border-radius: 8px; border: 1px solid; border-inline-start-width: 4px; margin: 18px 0; overflow: hidden; }
+    .admonition-title { font-weight: 700; padding: 9px 14px; font-size: 14.5px; text-transform: uppercase; letter-spacing: .4px; }
+    .admonition-body { padding: 12px 14px; font-size: 15px; }
+    .admonition-body > :first-child { margin-top: 0; }
+    .admonition-body > :last-child { margin-bottom: 0; }
+    .admonition.note { background: var(--note-bg); border-color: var(--note-border); }
+    .admonition.note .admonition-title { color: var(--note-fg); }
+    .admonition.tip, .admonition.success, .admonition.example { background: var(--tip-bg); border-color: var(--tip-border); }
+    .admonition.tip .admonition-title, .admonition.success .admonition-title, .admonition.example .admonition-title { color: var(--tip-fg); }
+    .admonition.warning, .admonition.attention, .admonition.caution { background: var(--warn-bg); border-color: var(--warn-border); }
+    .admonition.warning .admonition-title, .admonition.attention .admonition-title, .admonition.caution .admonition-title { color: var(--warn-fg); }
+    .admonition.danger, .admonition.error, .admonition.failure, .admonition.bug { background: var(--danger-bg); border-color: var(--danger-border); }
+    .admonition.danger .admonition-title, .admonition.error .admonition-title, .admonition.failure .admonition-title, .admonition.bug .admonition-title { color: var(--danger-fg); }
+    .admonition.info, .admonition.question, .admonition.quote, .admonition.abstract, .admonition.todo { background: var(--note-bg); border-color: var(--note-border); }
+    .admonition.info .admonition-title, .admonition.question .admonition-title, .admonition.quote .admonition-title, .admonition.abstract .admonition-title, .admonition.todo .admonition-title { color: var(--note-fg); }
+
+    /* pager */
+    .pager { display: flex; justify-content: space-between; gap: 12px; margin-top: 48px; padding-top: 20px; border-top: 1px solid var(--border); }
+    .pager-btn { color: var(--link); text-decoration: none; font-weight: 600; font-size: 14px; }
+    .pager-btn:hover { text-decoration: underline; }
+    .pager-btn.next { margin-inline-start: auto; text-align: end; }
+
+    /* search results dropdown */
+    .search-results {
+      position: fixed; top: 57px; left: 50%; transform: translateX(-50%);
+      width: min(560px, calc(100vw - 24px)); max-height: 70vh; overflow-y: auto;
+      background: var(--surface); border: 1px solid var(--border); border-radius: 12px;
+      box-shadow: var(--shadow-lg); z-index: 60; padding: 6px;
+    }
+    .sr-item { display: block; width: 100%; text-align: left; border: 0; background: transparent; padding: 10px 12px; border-radius: 8px; cursor: pointer; color: var(--text); }
+    .sr-item:hover, .sr-item:focus { background: var(--surface-2); }
+    .sr-section { display: block; font-size: 11.5px; font-weight: 700; text-transform: uppercase; letter-spacing: .4px; color: var(--muted); }
+    .sr-title { display: block; font-weight: 600; font-size: 14.5px; margin: 2px 0; color: var(--primary-strong); }
+    .sr-snippet { display: block; font-size: 13px; color: var(--muted); }
+    .sr-empty { padding: 14px; color: var(--muted); font-size: 14px; }
+    .sidebar-backdrop { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.4); z-index: 39; }
+
+    @media (max-width: 900px) {
+      .icon-btn { display: block; }
+      .sidebar {
+        position: fixed; top: 0; inset-inline-start: 0; bottom: 0; height: 100vh; z-index: 50;
+        transform: translateX(-100%); transition: transform .2s ease; box-shadow: var(--shadow-lg);
+      }
+      [dir="rtl"] .sidebar { transform: translateX(100%); }
+      body.sidebar-open .sidebar { transform: translateX(0); }
+      body.sidebar-open .sidebar-backdrop { display: block; }
+      .content { padding: 24px 20px 80px; }
+      .brand-sub { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <header class="topbar">
+      <button class="icon-btn" id="menuBtn" type="button" aria-label="Toggle navigation">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+      </button>
+      <div class="brand">
+        <svg class="brand-logo" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M17 8C8 10 5.9 16.17 3.82 21.34l1.89.66.95-2.3c.48.17.98.3 1.34.3C19 20 22 3 22 3c-1 2-8 2.25-13 3.25S2 11.5 2 13.5s1.75 3.75 1.75 3.75C7 8 17 8 17 8z"/></svg>
+        <div class="brand-text">
+          <span class="brand-name">Paperless-ngx</span>
+          <span class="brand-sub">User Guides</span>
+        </div>
+      </div>
+      <div class="search-wrap">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+        <input id="searchInput" type="search" placeholder="Search the guides…" autocomplete="off" aria-label="Search the guides">
+      </div>
+      <div class="lang-toggle" id="langToggle" role="group" aria-label="Language">
+        <button type="button" data-lang="en" class="active">English</button>
+        <button type="button" data-lang="ar">العربية</button>
+      </div>
+    </header>
+    <div class="layout">
+      <aside class="sidebar" id="sidebar">
+        <div class="sidebar-scroll"><div id="navSections"></div></div>
+      </aside>
+      <main class="content-wrap">
+        <article class="content" id="content"></article>
+      </main>
+    </div>
+  </div>
+  <div class="search-results" id="searchResults" hidden></div>
+  <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
+  <script>
+  const GUIDES_DATA = __GUIDES_DATA__;
+
+  /* ---------- utilities ---------- */
+  function escHtml(s) {
+    return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  }
+  function escAttr(s) {
+    return escHtml(s).replace(/"/g, '&quot;');
+  }
+  function slugify(text) {
+    return String(text).trim().toLowerCase()
+      .replace(/[^\p{L}\p{N}]+/gu, '-')
+      .replace(/^-+|-+$/g, '');
+  }
+
+  /* ---------- data maps ---------- */
+  const guideById = {};
+  const guideByPath = {};
+  GUIDES_DATA.sections.forEach((section) => {
+    section.items.forEach((item) => {
+      guideById[item.id] = { section, item };
+      guideByPath[item.fileEn] = { id: item.id, lang: 'en' };
+      guideByPath[item.fileAr] = { id: item.id, lang: 'ar' };
+    });
+  });
+
+  /* ---------- path resolution ---------- */
+  function resolvePath(dir, rel) {
+    const parts = (dir ? dir.split('/') : []).concat(rel.split('/'));
+    const out = [];
+    for (const p of parts) {
+      if (p === '' || p === '.') continue;
+      if (p === '..') { out.pop(); }
+      else out.push(p);
+    }
+    return out.join('/');
+  }
+
+  /* ---------- inline renderer ---------- */
+  function renderInline(text, ctx) {
+    if (!text) return '';
+    text = String(text).replace(/[ \t]*\n[ \t]*/g, ' ');
+    const codes = [];
+    text = text.replace(/`([^`]*)`/g, (m, c) => {
+      codes.push('<code>' + escHtml(c) + '</code>');
+      return '\u0000C' + (codes.length - 1) + '\u0000';
+    });
+    text = escHtml(text);
+    text = text.replace(/\[([^\]]+)\]\(([^)\s]+)\)/g, (m, label, url) => {
+      return renderLink(label, url, ctx);
+    });
+    text = text.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+    text = text.replace(/__([^_]+)__/g, '<strong>$1</strong>');
+    text = text.replace(/(^|[^*])\*([^*\s][^*]*?)\*(?!\*)/g, '$1<em>$2</em>');
+    text = text.replace(/\b_([^_\s][^_]*?)_\b/g, '<em>$1</em>');
+    text = text.replace(/\u0000C(\d+)\u0000/g, (m, i) => codes[+i]);
+    return text;
+  }
+
+  function renderLink(label, url, ctx) {
+    if (/^[a-z][a-z0-9+.-]*:/i.test(url) || url.startsWith('//')) {
+      return '<a href="' + escAttr(url) + '" target="_blank" rel="noopener">' + label + '</a>';
+    }
+    if (url.startsWith('#')) {
+      return '<a href="#' + escAttr(slugify(url.slice(1))) + '">' + label + '</a>';
+    }
+    let clean = url, anchor = '';
+    const h = url.indexOf('#');
+    if (h >= 0) { anchor = url.slice(h); clean = url.slice(0, h); }
+    if (!clean.endsWith('.md')) {
+      return '<a href="' + escAttr(url) + '">' + label + '</a>';
+    }
+    const resolved = resolvePath(ctx.dir || '', clean);
+    const entry = guideByPath[resolved];
+    if (entry) {
+      return '<a href="#' + entry.id + '" data-guide="' + entry.id + '" data-lang="' + (entry.lang === 'ar' ? 'ar' : 'auto') + '">' + label + '</a>';
+    }
+    return '<a class="ext" href="docs/' + escAttr(resolved + anchor) + '" target="_blank" rel="noopener">' + label + '</a>';
+  }
+
+  /* ---------- block renderer ---------- */
+  function stripFrontMatter(md) {
+    return String(md).replace(/^---\s*\r?\n[\s\S]*?\r?\n---\s*(?:\r?\n|$)/, '');
+  }
+
+  function renderMarkdown(md, ctx) {
+    return renderBlocks(stripFrontMatter(md), ctx);
+  }
+
+  function isTableSep(line) {
+    return /^\s*\|?\s*:?-{3,}:?\s*(\|\s*:?-{3,}:?\s*)+\|?\s*$/.test(line.trim());
+  }
+
+  function splitRow(line) {
+    let s = line.trim();
+    if (s.startsWith('|')) s = s.slice(1);
+    if (s.endsWith('|')) s = s.slice(0, -1);
+    return s.split('|').map((c) => c.trim());
+  }
+
+  function renderItemContent(content, blocks, ctx) {
+    let html = '';
+    const paras = content.split(/\n\s*\n/);
+    paras.forEach((p) => {
+      const t = p.trim();
+      if (t) html += '<p>' + renderInline(t, ctx) + '</p>';
+    });
+    html += blocks.join('');
+    return html;
+  }
+
+  function parseList(lines, i, ctx) {
+    const first = lines[i].match(/^(\s*)([-*+]|\d+[.)])\s+(.*)$/);
+    const indent = first[1];
+    const ordered = /^\d/.test(first[2]);
+    const items = [];
+    let j = i;
+    while (j < lines.length) {
+      const cm = lines[j].match(/^(\s*)([-*+]|\d+[.)])\s+(.*)$/);
+      if (!cm || cm[1] !== indent || (/^\d/.test(cm[2]) !== ordered)) break;
+      j++;
+      const parts = [cm[3]];
+      const blocks = [];
+      while (j < lines.length) {
+        const l = lines[j];
+        if (l.trim() === '') { parts.push(''); j++; continue; }
+        const lead = l.match(/^(\s*)/)[1].length;
+        const lm = l.match(/^(\s*)([-*+]|\d+[.)])\s+(.*)$/);
+        if (lm && lead > indent.length) {
+          const sub = parseList(lines, j, ctx);
+          blocks.push(sub.html);
+          j = sub.next;
+          continue;
+        }
+        if (lead > indent.length) {
+          parts.push(l.trim());
+          j++;
+          continue;
+        }
+        break;
+      }
+      items.push('<li>' + renderItemContent(parts.join('\n').trim(), blocks, ctx) + '</li>');
+    }
+    const tag = ordered ? 'ol' : 'ul';
+    return { html: '<' + tag + '>' + items.join('') + '</' + tag + '>', next: j };
+  }
+
+  function isBlockStart(lines, idx) {
+    const t = lines[idx].trim();
+    if (t === '') return true;
+    if (/^#{1,6}\s/.test(t)) return true;
+    if (/^```/.test(t)) return true;
+    if (/^!!!\s/.test(t)) return true;
+    if (/^(\*\s*){3,}$|^(-\s*){3,}$|^(_\s*){3,}$/.test(t)) return true;
+    if (/^([-*+]|\d+[.)])\s/.test(t)) return true;
+    if (/^>/.test(t)) return true;
+    if (/^\s*\|/.test(t) && idx + 1 < lines.length && isTableSep(lines[idx + 1])) return true;
+    return false;
+  }
+
+  function renderBlocks(src, ctx) {
+    const lines = src.split(/\r?\n/);
+    const out = [];
+    let i = 0;
+    while (i < lines.length) {
+      const line = lines[i];
+      if (!line.trim()) { i++; continue; }
+
+      // fenced code
+      if (/^\s*```/.test(line)) {
+        const code = [];
+        i++;
+        while (i < lines.length && !/^\s*```/.test(lines[i])) { code.push(lines[i]); i++; }
+        i++;
+        out.push('<pre><code>' + escHtml(code.join('\n')) + '</code></pre>');
+        continue;
+      }
+
+      // heading
+      const h = line.match(/^(#{1,6})\s+(.*)$/);
+      if (h) {
+        const level = h[1].length;
+        const text = h[2].trim();
+        out.push('<h' + level + ' id="' + escAttr(slugify(text)) + '">' + renderInline(text, ctx) + '</h' + level + '>');
+        i++;
+        continue;
+      }
+
+      // horizontal rule
+      if (/^\s*(\*\s*){3,}$|^\s*(-\s*){3,}$|^\s*(_\s*){3,}$/.test(line)) {
+        out.push('<hr>');
+        i++;
+        continue;
+      }
+
+      // admonition
+      const adm = line.match(/^!!!\s+([a-zA-Z-]+)(?:\s+(.+))?\s*$/);
+      if (adm) {
+        const type = adm[1].toLowerCase();
+        const title = adm[2] ? adm[2].trim().replace(/^"(.*)"$/, '$1') : (type.charAt(0).toUpperCase() + type.slice(1));
+        const body = [];
+        i++;
+        while (i < lines.length) {
+          const l = lines[i];
+          if (l.trim() === '') { body.push(''); i++; continue; }
+          const lead = l.match(/^(\s*)/)[1].length;
+          if (lead >= 4) { body.push(l.slice(4)); i++; continue; }
+          break;
+        }
+        out.push('<div class="admonition ' + escAttr(type) + '"><div class="admonition-title">' + escHtml(title) + '</div><div class="admonition-body">' + renderBlocks(body.join('\n'), ctx) + '</div></div>');
+        continue;
+      }
+
+      // table
+      if (/^\s*\|/.test(line) && i + 1 < lines.length && isTableSep(lines[i + 1])) {
+        const header = splitRow(line);
+        i += 2;
+        const rows = [];
+        while (i < lines.length && /^\s*\|/.test(lines[i]) && lines[i].trim() !== '') {
+          rows.push(splitRow(lines[i]));
+          i++;
+        }
+        let html = '<div class="table-wrap"><table><thead><tr>';
+        header.forEach((c) => { html += '<th>' + renderInline(c, ctx) + '</th>'; });
+        html += '</tr></thead><tbody>';
+        rows.forEach((r) => {
+          html += '<tr>';
+          for (let c = 0; c < header.length; c++) html += '<td>' + renderInline(r[c] || '', ctx) + '</td>';
+          html += '</tr>';
+        });
+        html += '</tbody></table></div>';
+        out.push(html);
+        continue;
+      }
+
+      // list
+      if (/^(\s*)([-*+]|\d+[.)])\s+/.test(line)) {
+        const list = parseList(lines, i, ctx);
+        out.push(list.html);
+        i = list.next;
+        continue;
+      }
+
+      // paragraph
+      const para = [line.trim()];
+      i++;
+      while (i < lines.length && lines[i].trim() !== '' && !isBlockStart(lines, i)) {
+        para.push(lines[i].trim());
+        i++;
+      }
+      out.push('<p>' + renderInline(para.join(' '), ctx) + '</p>');
+    }
+    return out.join('\n');
+  }
+
+  /* ---------- app state & DOM ---------- */
+  const state = { lang: 'en', id: 'home' };
+  const contentEl = document.getElementById('content');
+  const navEl = document.getElementById('navSections');
+  const searchInput = document.getElementById('searchInput');
+  const searchResults = document.getElementById('searchResults');
+  const langToggle = document.getElementById('langToggle');
+  const menuBtn = document.getElementById('menuBtn');
+  const backdrop = document.getElementById('sidebarBackdrop');
+
+  const flatIds = [];
+  GUIDES_DATA.sections.forEach((s) => s.items.forEach((it) => flatIds.push(it.id)));
+
+  function homeGuide() {
+    return { title: GUIDES_DATA.title, en: GUIDES_DATA.home.en, ar: GUIDES_DATA.home.ar, fileEn: 'index.md', fileAr: 'index.md' };
+  }
+
+  function currentGuide() {
+    if (state.id === 'home') return homeGuide();
+    const e = guideById[state.id];
+    return e ? e.item : homeGuide();
+  }
+
+  /* ---------- rendering ---------- */
+  function render() {
+    const g = currentGuide();
+    const lang = (state.lang === 'ar' && g.ar) ? 'ar' : 'en';
+    const md = g[lang];
+    const file = lang === 'ar' ? (g.fileAr || g.fileEn) : (g.fileEn || g.fileAr);
+    const dir = file.indexOf('/') >= 0 ? file.substring(0, file.lastIndexOf('/')) : '';
+    const ctx = { dir };
+    let html = renderMarkdown(md, ctx);
+
+    if (state.id !== 'home') {
+      const idx = flatIds.indexOf(state.id);
+      let foot = '<nav class="pager">';
+      if (idx > 0) {
+        const prev = guideById[flatIds[idx - 1]].item;
+        foot += '<a class="pager-btn" data-guide="' + prev.id + '" href="#' + prev.id + '">← ' + prev.title[lang] + '</a>';
+      }
+      if (idx >= 0 && idx < flatIds.length - 1) {
+        const next = guideById[flatIds[idx + 1]].item;
+        foot += '<a class="pager-btn next" data-guide="' + next.id + '" href="#' + next.id + '">' + next.title[lang] + ' →</a>';
+      }
+      foot += '</nav>';
+      html += foot;
+    }
+
+    contentEl.innerHTML = html;
+    contentEl.setAttribute('dir', lang === 'ar' ? 'rtl' : 'ltr');
+    contentEl.setAttribute('lang', lang);
+    document.documentElement.dir = state.lang === 'ar' ? 'rtl' : 'ltr';
+    document.documentElement.lang = state.lang === 'ar' ? 'ar' : 'en';
+    document.title = g.title[lang] + ' — Paperless-ngx User Guides';
+    window.scrollTo(0, 0);
+  }
+
+  function renderNav() {
+    let html = '<a class="nav-item home' + (state.id === 'home' ? ' active' : '') + '" data-guide="home" href="#home"><span class="nav-label">' + GUIDES_DATA.title[state.lang] + '</span></a>';
+    GUIDES_DATA.sections.forEach((s) => {
+      html += '<div class="nav-section">';
+      html += '<button class="nav-section-header" type="button"><span class="nav-section-title">' + s.title[state.lang] + '</span><span class="chevron">▾</span></button>';
+      html += '<div class="nav-section-body">';
+      s.items.forEach((it) => {
+        html += '<a class="nav-item' + (state.id === it.id ? ' active' : '') + '" data-guide="' + it.id + '" href="#' + it.id + '"><span class="nav-label">' + it.title[state.lang] + '</span></a>';
+      });
+      html += '</div></div>';
+    });
+    navEl.innerHTML = html;
+  }
+
+  function updateLangToggle() {
+    langToggle.querySelectorAll('button').forEach((b) => {
+      b.classList.toggle('active', b.getAttribute('data-lang') === state.lang);
+    });
+  }
+
+  function navigateTo(id, langOverride) {
+    const g = id === 'home' ? homeGuide() : (guideById[id] ? guideById[id].item : null);
+    if (!g) return;
+    state.id = id;
+    if (langOverride) state.lang = langOverride;
+    else if (state.lang === 'ar' && g.ar) state.lang = 'ar';
+    else state.lang = 'en';
+    render();
+    renderNav();
+    updateLangToggle();
+    hideSearch();
+    closeSidebar();
+  }
+
+  /* ---------- search ---------- */
+  function stripMd(md) {
+    return String(md)
+      .replace(/^---[\s\S]*?---\s*/, '')
+      .replace(/```[\s\S]*?```/g, ' ')
+      .replace(/`([^`]*)`/g, '$1')
+      .replace(/!\[[^\]]*\]\([^)]*\)/g, '')
+      .replace(/\[([^\]]+)\]\([^)]*\)/g, '$1')
+      .replace(/[*_#|>~]/g, ' ')
+      .replace(/\s+/g, ' ')
+      .trim();
+  }
+
+  const searchIndex = [];
+  GUIDES_DATA.sections.forEach((s) => {
+    s.items.forEach((it) => {
+      searchIndex.push({ id: it.id, sectionTitle: s.title, title: it.title, en: stripMd(it.en).toLowerCase(), ar: stripMd(it.ar).toLowerCase() });
+    });
+  });
+
+  function makeSnippet(text, q) {
+    const idx = text.indexOf(q);
+    if (idx === -1) return text.slice(0, 90);
+    const start = Math.max(0, idx - 40);
+    const end = Math.min(text.length, idx + q.length + 60);
+    return (start > 0 ? '…' : '') + text.slice(start, end) + (end < text.length ? '…' : '');
+  }
+
+  function showSearch(q) {
+    const results = [];
+    searchIndex.forEach((entry) => {
+      const hitEn = entry.en.includes(q);
+      const hitAr = entry.ar.includes(q);
+      const hitTitle = entry.title.en.toLowerCase().includes(q) || entry.title.ar.includes(q);
+      if (hitEn || hitAr || hitTitle) {
+        const lang = hitAr && !hitEn ? 'ar' : 'en';
+        const text = lang === 'ar' ? entry.ar : entry.en;
+        results.push({ entry, lang, snippet: makeSnippet(text, q) });
+      }
+    });
+    if (!results.length) {
+      searchResults.innerHTML = '<div class="sr-empty">No results for “' + escHtml(q) + '”</div>';
+    } else {
+      searchResults.innerHTML = results.map((r) => {
+        return '<button class="sr-item" type="button" data-guide="' + r.entry.id + '" data-lang="' + r.lang + '">' +
+          '<span class="sr-section">' + r.entry.sectionTitle[state.lang] + '</span>' +
+          '<span class="sr-title">' + r.entry.title[r.lang] + '</span>' +
+          '<span class="sr-snippet">' + escHtml(r.snippet) + '</span></button>';
+      }).join('');
+    }
+    searchResults.hidden = false;
+    filterNav(results);
+  }
+
+  function filterNav(results) {
+    const ids = new Set(results.map((r) => r.entry.id));
+    document.querySelectorAll('#navSections .nav-item[data-guide]').forEach((a) => {
+      const id = a.getAttribute('data-guide');
+      if (id === 'home') { a.style.display = ''; return; }
+      a.style.display = ids.has(id) ? '' : 'none';
+    });
+    document.querySelectorAll('#navSections .nav-section').forEach((s) => {
+      const any = Array.prototype.some.call(s.querySelectorAll('.nav-item[data-guide]'), (a) => a.style.display !== 'none');
+      s.style.display = any ? '' : 'none';
+    });
+  }
+
+  function hideSearch() {
+    searchResults.hidden = true;
+    document.querySelectorAll('#navSections .nav-item, #navSections .nav-section').forEach((el) => { el.style.display = ''; });
+  }
+
+  function closeSidebar() {
+    document.body.classList.remove('sidebar-open');
+  }
+
+  /* ---------- events ---------- */
+  document.addEventListener('click', (e) => {
+    const guideEl = e.target.closest('[data-guide]');
+    if (guideEl) {
+      e.preventDefault();
+      const lang = guideEl.getAttribute('data-lang');
+      let langArg = null;
+      if (lang === 'ar') langArg = 'ar';
+      else if (lang === 'en') langArg = 'en';
+      else if (lang === 'auto') langArg = state.lang;
+      navigateTo(guideEl.getAttribute('data-guide'), langArg);
+      if (guideEl.classList.contains('sr-item')) searchInput.value = '';
+      return;
+    }
+    const hdr = e.target.closest('.nav-section-header');
+    if (hdr) {
+      hdr.parentElement.classList.toggle('collapsed');
+    }
+  });
+
+  searchInput.addEventListener('input', () => {
+    const q = searchInput.value.trim().toLowerCase();
+    if (q.length < 2) { hideSearch(); return; }
+    showSearch(q);
+  });
+
+  searchInput.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') { searchInput.value = ''; hideSearch(); }
+  });
+
+  document.addEventListener('click', (e) => {
+    if (!e.target.closest('.search-wrap') && !e.target.closest('.search-results')) hideSearch();
+  });
+
+  langToggle.querySelectorAll('button').forEach((b) => {
+    b.addEventListener('click', () => {
+      state.lang = b.getAttribute('data-lang');
+      render();
+      renderNav();
+      updateLangToggle();
+    });
+  });
+
+  menuBtn.addEventListener('click', () => {
+    document.body.classList.toggle('sidebar-open');
+  });
+  backdrop.addEventListener('click', closeSidebar);
+
+  /* ---------- init ---------- */
+  updateLangToggle();
+  renderNav();
+  render();
+  </script>
+</body>
+</html>
