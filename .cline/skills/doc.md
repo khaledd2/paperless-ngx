@@ -19,12 +19,24 @@ custom fields, etc.
 
 ## Output conventions
 
+- Guides live under `docs/end-user-guides/`, in the folder of the section
+  they belong to:
+
+  | Section | Folder |
+  | --- | --- |
+  | Getting started (overview, dashboard, signing in) | `getting-started/` |
+  | Documents (the document lifecycle) | `documents/` |
+  | Attributes (tags, correspondents, document types, storage paths, custom fields) | `attributes/` |
+  | Automation (saved views, workflows, mail) | `automation/` |
+  | Administration and monitoring | `administration/` |
+  | Optional and advanced (AI, barcodes and ASN, consume folder) | `advanced/` |
+
 - Create **two separate files** with identical structure:
 
   | File | Language |
   | --- | --- |
-  | `docs/<topic>.md` | English |
-  | `docs/<topic>.ar.md` | Arabic |
+  | `docs/end-user-guides/<section>/<topic>.md` | English |
+  | `docs/end-user-guides/<section>/<topic>.ar.md` | Arabic |
 
 - Keep the same section headings and order in both languages so they are easy
   to maintain side by side.
@@ -94,7 +106,8 @@ Before writing:
 
 ## Quality checklist
 
-- [ ] Two files exist: `docs/<topic>.md` and `docs/<topic>.ar.md`.
+- [ ] Two files exist: `docs/end-user-guides/<section>/<topic>.md` and
+      `docs/end-user-guides/<section>/<topic>.ar.md`.
 - [ ] Both have the same section order.
 - [ ] No file paths, class names, code, SQL, or env-var names appear.
 - [ ] All UI terms match the actual labels in the edit-dialog templates.

@@ -19,12 +19,32 @@ automation, sharing, and administration.
 
 Follow the `paperless-docs` skill at `.cline/skills/doc.md`:
 
-- **Two files per topic**, same structure:
-  - `docs/<topic>.md` (English)
-  - `docs/<topic>.ar.md` (Arabic)
+- **Two files per topic**, same structure, under `docs/end-user-guides/`:
+  - `docs/end-user-guides/<section>/<topic>.md` (English)
+  - `docs/end-user-guides/<section>/<topic>.ar.md` (Arabic)
 - Plain language; use the app's **actual UI labels**.
 - mkdocs-material formatting: front-matter `title`, `!!! note` / `!!! warning` / `!!! danger`, tables.
 - Each guide ends with a short **worked example** where useful.
+
+### Folder structure
+
+Every guide produced by this plan lives under `docs/end-user-guides/`, grouped
+by roadmap section, so the repository, the sidebar, and the guides index all
+read the same way:
+
+```text
+docs/end-user-guides/
+├── index.md             # the guides index, English and Arabic
+├── getting-started/     # sections 0-1: authentication, overview, dashboard
+├── documents/           # section 2
+├── attributes/          # section 3
+├── automation/          # section 4
+├── administration/      # section 5
+└── advanced/            # section 6
+```
+
+Each section folder mirrors a group of the `nav` in `zensical.toml` and the
+matching heading in `docs/end-user-guides/index.md`.
 
 ## Status legend
 
@@ -35,7 +55,8 @@ Follow the `paperless-docs` skill at `.cline/skills/doc.md`:
 ### 0. Foundation
 
 - [x] **Authentication, users, groups & permissions** — EN + AR. Files are
-  `docs/authentication.md` and `docs/authentication.ar.md` (renamed from
+  `docs/end-user-guides/getting-started/authentication.md` and
+  `docs/end-user-guides/getting-started/authentication.ar.md` (renamed from
   `permissions.*` to match the wider scope).
 
 ### 1. Getting started
@@ -47,9 +68,9 @@ Follow the `paperless-docs` skill at `.cline/skills/doc.md`:
 
 ### 2. Documents (core lifecycle) — **done**
 
-Delivered as nested pages under `docs/documents/`, English and Arabic, and listed
-in `docs/guides.md`, `docs/index.md`, and the **Documents** group of the `nav` in
-`zensical.toml`.
+Delivered as nested pages under `docs/end-user-guides/documents/`, English and
+Arabic, and listed in `docs/end-user-guides/index.md`, `docs/index.md`, and the
+**Documents** group of the `nav` in `zensical.toml`.
 
 - [x] `documents/adding` — Uploading and consuming documents, supported file
   types, re-adding the same file, extra versions. EN + AR.
@@ -78,9 +99,9 @@ in `docs/guides.md`, `docs/index.md`, and the **Documents** group of the `nav` i
 
 ### 3. Organizing (attributes) — **done**
 
-Delivered as nested pages under `docs/attributes/`, English and Arabic, and
-listed in `docs/guides.md`, `docs/index.md`, and the **Attributes** group of the
-`nav` in `zensical.toml`.
+Delivered as nested pages under `docs/end-user-guides/attributes/`, English and
+Arabic, and listed in `docs/end-user-guides/index.md`, `docs/index.md`, and the
+**Attributes** group of the `nav` in `zensical.toml`.
 
 - [x] `attributes/tags` — Tags (colors, hierarchy, matching, inbox tag). EN + AR.
 - [x] `attributes/correspondents` — Correspondents. EN + AR.
@@ -92,9 +113,9 @@ listed in `docs/guides.md`, `docs/index.md`, and the **Attributes** group of the
 
 ### 4. Automation — **done**
 
-Delivered as pages at the root of `docs/`, English and Arabic, and listed in
-`docs/guides.md`, `docs/index.md`, and the **Automation** group of the `nav` in
-`zensical.toml`.
+Delivered as nested pages under `docs/end-user-guides/automation/`, English and
+Arabic, and listed in `docs/end-user-guides/index.md`, `docs/index.md`, and the
+**Automation** group of the `nav` in `zensical.toml`.
 
 - [x] `saved-views` — Saved views (filters): the **Saved Views** page, the
   **Views** menu, **Save "…"**, **Save as...** / **Save current view**, layout
@@ -108,9 +129,9 @@ Delivered as pages at the root of `docs/`, English and Arabic, and listed in
 
 ### 5. Administration & monitoring — **done**
 
-Delivered as nested pages under `docs/admin/`, English and Arabic, and listed in
-`docs/guides.md`, `docs/index.md`, and the **Administration & Monitoring** group
-of the `nav` in `zensical.toml`.
+Delivered as nested pages under `docs/end-user-guides/administration/`, English
+and Arabic, and listed in `docs/end-user-guides/index.md`, `docs/index.md`, and
+the **Administration & Monitoring** group of the `nav` in `zensical.toml`.
 
 - [x] `settings` — Application settings: the page header (**Start tour**,
   **System Status**, **Open Django Admin**) and the four tabs **General**,
@@ -134,9 +155,9 @@ of the `nav` in `zensical.toml`.
 
 ### 6. Optional / advanced — **done**
 
-Delivered as pages at the root of `docs/`, English and Arabic, and listed in
-`docs/guides.md`, `docs/index.md`, and the **Optional & Advanced** group of the
-`nav` in `zensical.toml`.
+Delivered as nested pages under `docs/end-user-guides/advanced/`, English and
+Arabic, and listed in `docs/end-user-guides/index.md`, `docs/index.md`, and the
+**Optional & Advanced** group of the `nav` in `zensical.toml`.
 
 - [x] `ai` — AI features: the chat in the top bar (its button, the two prompts
   **Ask a question about a document...** and **Ask a question about this
@@ -316,35 +337,43 @@ repository, so that every quoted label is a real label.
 
 ## Index / navigation
 
-- [x] Created `docs/guides.md` as the documentation index: it lists every topic
+- [x] Created the guides index (originally `docs/guides.md`, now
+  `docs/end-user-guides/index.md`): it lists every topic
   and links its English and Arabic pages. It is linked from `docs/index.md` and
   added to the `nav` in `zensical.toml` under **User Guides**.
 - [x] Section 2 added a nested **Documents** group to the `nav`, holding
   `adding`, `browsing`, `viewing`, `editing`, `notes-history`, `bulk`, `trash`,
   and `sharing` in reading order, and matching rows to the English and Arabic
-  tables of `docs/guides.md` plus the bullet list in `docs/index.md`.
+  tables of `docs/end-user-guides/index.md` plus the bullet list in `docs/index.md`.
 - [x] Section 3 added a nested **Attributes** group to the `nav`, holding
   `tags`, `correspondents`, `document-types`, `storage-paths`, and
   `custom-fields` in reading order — the same order used by the **Attributes**
-  tabs in the app — with matching rows in both tables of `docs/guides.md` and
+  tabs in the app — with matching rows in both tables of `docs/end-user-guides/index.md` and
   matching bullets in `docs/index.md`.
 - [x] Section 4 added a nested **Automation** group to the `nav`, holding
   `saved-views`, `workflows`, and `mail` in reading order — the order of the
   **Manage** section of the sidebar, where the three pages live — with matching
-  rows in both tables of `docs/guides.md` and matching bullets in
+  rows in both tables of `docs/end-user-guides/index.md` and matching bullets in
   `docs/index.md`.
 - [x] Section 5 added a nested **Administration & Monitoring** group to the
   `nav`, holding `settings`, `system-status`, `logs`, `tasks`, and `backup` in
-  reading order, with matching rows in both tables of `docs/guides.md` and
+  reading order, with matching rows in both tables of `docs/end-user-guides/index.md` and
   matching bullets in `docs/index.md`. The group is named **Administration &
   Monitoring** rather than **Administration** so that it does not read like the
   separate top-level **Administration** entry, which still holds
   `administration.md` and the migration guide.
 - [x] Section 6 added an **Optional & Advanced** group to the `nav`, holding
   `ai`, `barcodes-asn`, and `consume-folder` in the order of the roadmap, with
-  matching rows in both tables of `docs/guides.md` and matching bullets in
+  matching rows in both tables of `docs/end-user-guides/index.md` and matching bullets in
   `docs/index.md`. Smaller cross-links were added while doing so: the watched
   folder in `documents/adding`, the **Archive serial number** row in
   `documents/editing`, the AI assistant button in `dashboard`, and the **AI
   Index** row in `admin/system-status` now point at the new pages, in both
   languages.
+- [x] Restructure: every guide from this plan was moved under
+  `docs/end-user-guides/`, grouped by the sections above
+  (`getting-started/`, `documents/`, `attributes/`, `automation/`,
+  `administration/`, `advanced/`), with `docs/end-user-guides/index.md` as the
+  landing page. Relative links between the pages were re-pointed, the guides
+  index carries one heading per section, and the `nav` in `zensical.toml`
+  follows the same order under **User Guides**.

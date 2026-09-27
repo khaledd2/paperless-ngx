@@ -66,64 +66,70 @@ physical documents into a searchable online archive so you can keep, well, _less
 New to Paperless-ngx, or want a friendly walkthrough of the interface? Start
 with the guides, which are available in **English** and **Arabic**:
 
-- [Overview](overview.md) — what Paperless-ngx is and the concepts behind it.
-- [Dashboard & navigation](dashboard.md) — the dashboard, the top bar, and the
-  sidebar.
-- [Authentication, users, groups & permissions](authentication.md) — signing in
-  and deciding who can see and do what.
-- [Adding documents](documents/adding.md) — uploading, consuming, and what happens
-  while a document is processed.
-- [Browsing, filtering and searching](documents/browsing.md) — the document list
-  and how to narrow it down.
-- [Viewing a document](documents/viewing.md) — the viewer, versions, and
-  downloading.
-- [Editing document details](documents/editing.md) — correcting the title,
-  dates, tags, correspondent, custom fields, and the extracted text.
-- [Notes and history](documents/notes-history.md) — annotating a document and
-  following its changes.
-- [Deleting and restoring documents](documents/trash.md) — the trash and how to
-  get out of it.
-- [Working with many documents at once](documents/bulk.md) — bulk editing,
-  merging, sending, and deleting.
-- [Sharing and permissions](documents/sharing.md) — owners, permissions, share
-  links, and e-mail.
-- [Tags](attributes/tags.md) — colour-coded labels, hierarchies, and automatic
-  matching.
-- [Correspondents](attributes/correspondents.md) — the people and organisations
-  documents come from.
-- [Document types](attributes/document-types.md) — classifying documents by what
-  they are.
-- [Storage paths](attributes/storage-paths.md) — deciding where a document's file
-  is filed inside the archive.
-- [Custom fields](attributes/custom-fields.md) — your own fields for anything the
-  system does not already record.
-- [Saved views](saved-views.md) — keeping a set of filters as a named view, and
-  putting it in the sidebar or on the dashboard.
-- [Workflows](workflows.md) — automating what happens to a document as it
-  arrives, with triggers and actions.
-- [Mail](mail.md) — importing documents from an e-mail account, and the rules
-  that decide what happens to the messages.
-- [Settings](admin/settings.md) — the appearance, document, permission and
-  notification options that each person chooses for their own account.
-- [System status](admin/system-status.md) — the health report of the
-  installation, and how to read it.
-- [Logs](admin/logs.md) — reading the application, mail and background-worker
-  logs when something goes wrong.
-- [Tasks](admin/tasks.md) — monitoring what the system was asked to do, and what
-  came of it.
-- [Backup and restore](admin/backup.md) — what a complete backup has to contain,
-  and what is not a backup.
-- [AI features](ai.md) — the chat that answers questions about your documents, and
-  the suggestions it can make while you file them.
-- [Barcodes and ASN](barcodes-asn.md) — writing a number on the paper, reading it
-  back from a printable barcode, and splitting a stack of scans into documents.
-- [The consume folder](consume-folder.md) — the watched folder that imports files
-  by itself, and how to work with it.
+- [Overview](end-user-guides/getting-started/overview.md) — what Paperless-ngx
+  is and the concepts behind it.
+- [Dashboard & navigation](end-user-guides/getting-started/dashboard.md) — the
+  dashboard, the top bar, and the sidebar.
+- [Authentication, users, groups & permissions](end-user-guides/getting-started/authentication.md)
+  — signing in and deciding who can see and do what.
+- [Adding documents](end-user-guides/documents/adding.md) — uploading,
+  consuming, and what happens while a document is processed.
+- [Browsing, filtering and searching](end-user-guides/documents/browsing.md) —
+  the document list and how to narrow it down.
+- [Viewing a document](end-user-guides/documents/viewing.md) — the viewer,
+  versions, and downloading.
+- [Editing document details](end-user-guides/documents/editing.md) — correcting
+  the title, dates, tags, correspondent, custom fields, and the extracted text.
+- [Notes and history](end-user-guides/documents/notes-history.md) — annotating
+  a document and following its changes.
+- [Deleting and restoring documents](end-user-guides/documents/trash.md) — the
+  trash and how to get out of it.
+- [Working with many documents at once](end-user-guides/documents/bulk.md) —
+  bulk editing, merging, sending, and deleting.
+- [Sharing and permissions](end-user-guides/documents/sharing.md) — owners,
+  permissions, share links, and e-mail.
+- [Tags](end-user-guides/attributes/tags.md) — colour-coded labels,
+  hierarchies, and automatic matching.
+- [Correspondents](end-user-guides/attributes/correspondents.md) — the people
+  and organisations documents come from.
+- [Document types](end-user-guides/attributes/document-types.md) — classifying
+  documents by what they are.
+- [Storage paths](end-user-guides/attributes/storage-paths.md) — deciding where
+  a document's file is filed inside the archive.
+- [Custom fields](end-user-guides/attributes/custom-fields.md) — your own
+  fields for anything the system does not already record.
+- [Saved views](end-user-guides/automation/saved-views.md) — keeping a set of
+  filters as a named view, and putting it in the sidebar or on the dashboard.
+- [Workflows](end-user-guides/automation/workflows.md) — automating what
+  happens to a document as it arrives, with triggers and actions.
+- [Mail](end-user-guides/automation/mail.md) — importing documents from an
+  e-mail account, and the rules that decide what happens to the messages.
+- [Settings](end-user-guides/administration/settings.md) — the appearance,
+  document, permission and notification options that each person chooses for
+  their own account.
+- [System status](end-user-guides/administration/system-status.md) — the health
+  report of the installation, and how to read it.
+- [Logs](end-user-guides/administration/logs.md) — reading the application,
+  mail and background-worker logs when something goes wrong.
+- [Tasks](end-user-guides/administration/tasks.md) — monitoring what the system
+  was asked to do, and what came of it.
+- [Backup and restore](end-user-guides/administration/backup.md) — what a
+  complete backup has to contain, and what is not a backup.
+- [AI features](end-user-guides/advanced/ai.md) — the chat that answers
+  questions about your documents, and the suggestions it can make while you
+  file them.
+- [Barcodes and ASN](end-user-guides/advanced/barcodes-asn.md) — writing a
+  number on the paper, reading it back from a printable barcode, and splitting
+  a stack of scans into documents.
+- [The consume folder](end-user-guides/advanced/consume-folder.md) — the
+  watched folder that imports files by itself, and how to work with it.
 
-See the [full list of guides](guides.md) to browse every topic in both
-languages. For the Arabic versions, see [نظرة عامة](overview.ar.md),
-[لوحة المعلومات](dashboard.ar.md), [المصادقة والصلاحيات](authentication.ar.md),
-and [إضافة المستندات](documents/adding.ar.md).
+See the [full list of guides](end-user-guides/index.md) to browse every topic in
+both languages. For the Arabic versions, see
+[نظرة عامة](end-user-guides/getting-started/overview.ar.md),
+[لوحة المعلومات](end-user-guides/getting-started/dashboard.ar.md),
+[المصادقة والصلاحيات](end-user-guides/getting-started/authentication.ar.md), and
+[إضافة المستندات](end-user-guides/documents/adding.ar.md).
 
 ## Paperless, a history
 
