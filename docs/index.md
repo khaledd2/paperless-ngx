@@ -97,6 +97,12 @@ with the guides, which are available in **English** and **Arabic**:
   is filed inside the archive.
 - [Custom fields](attributes/custom-fields.md) — your own fields for anything the
   system does not already record.
+- [Saved views](saved-views.md) — keeping a set of filters as a named view, and
+  putting it in the sidebar or on the dashboard.
+- [Workflows](workflows.md) — automating what happens to a document as it
+  arrives, with triggers and actions.
+- [Mail](mail.md) — importing documents from an e-mail account, and the rules
+  that decide what happens to the messages.
 
 See the [full list of guides](guides.md) to browse every topic in both
 languages. For the Arabic versions, see [نظرة عامة](overview.ar.md),

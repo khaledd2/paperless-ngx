@@ -26,6 +26,9 @@ between them.
 | **Document types** — what kind of paperwork a document is. | [Read](attributes/document-types.md) | [اقرأ](attributes/document-types.ar.md) |
 | **Storage paths** — rules for where a document's file is filed inside the archive. | [Read](attributes/storage-paths.md) | [اقرأ](attributes/storage-paths.ar.md) |
 | **Custom fields** — your own fields for text, dates, numbers, amounts, links, and choices. | [Read](attributes/custom-fields.md) | [اقرأ](attributes/custom-fields.ar.md) |
+| **Saved views** — keeping a set of filters as a named view, and showing it in the sidebar or on the dashboard. | [Read](saved-views.md) | [اقرأ](saved-views.ar.md) |
+| **Workflows** — automating the document pipeline with triggers and actions. | [Read](workflows.md) | [اقرأ](workflows.ar.md) |
+| **Mail** — importing documents from e-mail: accounts, rules, and processed mail. | [Read](mail.md) | [اقرأ](mail.ar.md) |
 
 !!! note
 
@@ -57,6 +60,9 @@ between them.
 | **أنواع المستندات** — ماهية المعاملة الورقية. | [Read](attributes/document-types.md) | [اقرأ](attributes/document-types.ar.md) |
 | **مسارات التخزين** — قواعد المكان الذي يُرتَّب فيه ملف المستند داخل الأرشيف. | [Read](attributes/storage-paths.md) | [اقرأ](attributes/storage-paths.ar.md) |
 | **الحقول المخصّصة** — حقولك الخاصة للنصوص والتواريخ والأرقام والمبالغ والروابط والاختيارات. | [Read](attributes/custom-fields.md) | [اقرأ](attributes/custom-fields.ar.md) |
+| **العروض المحفوظة** — حفظ مجموعة مرشّحات في عرض مُسمّى، وإظهاره في الشريط الجانبي أو على لوحة المعلومات. | [Read](saved-views.md) | [اقرأ](saved-views.ar.md) |
+| **سير العمل** — أتمتة مسار معالجة المستند بالمُشغّلات والإجراءات. | [Read](workflows.md) | [اقرأ](workflows.ar.md) |
+| **البريد** — استيراد المستندات من البريد الإلكتروني: الحسابات والقواعد والبريد المعالَج. | [Read](mail.md) | [اقرأ](mail.ar.md) |
 
 !!! note
 

@@ -90,11 +90,21 @@ listed in `docs/guides.md`, `docs/index.md`, and the **Attributes** group of the
 - [x] `attributes/custom-fields` — Custom fields (data types, select options,
   default currency, filtering and search). EN + AR.
 
-### 4. Automation
+### 4. Automation — **done**
 
-- [ ] `saved-views` — Saved views (filters).
-- [ ] `workflows` — Workflows (triggers and actions).
-- [ ] `mail` — Mail: accounts and rules.
+Delivered as pages at the root of `docs/`, English and Arabic, and listed in
+`docs/guides.md`, `docs/index.md`, and the **Automation** group of the `nav` in
+`zensical.toml`.
+
+- [x] `saved-views` — Saved views (filters): the **Saved Views** page, the
+  **Views** menu, **Save "…"**, **Save as...** / **Save current view**, layout
+  and page-size settings, and how views are shared. EN + AR.
+- [x] `workflows` — Workflows: the list, **Triggers** (types, filters, advanced
+  filters, scheduled settings) and **Actions** (Assignment, Removal, Email,
+  Webhook, Password removal, Move to trash). EN + AR.
+- [x] `mail` — Mail: **Mail accounts** (including the connection test and the
+  Gmail/Outlook sign-ins), **Mail rules** (criteria, consumption, action and
+  metadata), **Processed Mail**. EN + AR.
 
 ### 5. Administration & monitoring
 
@@ -115,7 +125,7 @@ listed in `docs/guides.md`, `docs/index.md`, and the **Attributes** group of the
 1. **Foundation** — done; rename existing files.
 2. **Core document lifecycle** — done (section 2 above).
 3. **Organizing attributes** — done (section 3 above).
-4. **Automation**.
+4. **Automation** — done (section 4 above).
 5. **Administration & monitoring**.
 6. **Optional / advanced**.
 
@@ -155,6 +165,41 @@ repository, so that every quoted label is a real label.
   list. No environment variables, class names, or source paths appear; the
   storage-path **Path** placeholders are user-entered values, not server
   configuration. Each page ends with **A quick example**.
+- **Section 4 — Automation (3 topics, 6 files):** EN and AR pages mirror each
+  other heading for heading; each ends with **A quick example**; and the same
+  no-leak rule holds — no environment variables, class names, or source paths,
+  though **Views**, **Save as...**, and the trigger and action names are the
+  application's own labels. Every quoted label was checked against the Angular
+  templates: the **Saved Views** page (**Name**, **Show on dashboard**,
+  **Show in sidebar**, **Documents page size**, **Display as** with **Table** /
+  **Small Cards** / **Large Cards**, **Show** with its `Default` empty state,
+  **Note: ordering is not preserved**, **Permissions**, **Delete**, **Cancel**,
+  **Save**, **No saved views defined.**) and the documents-list **Views** menu
+  (**Save "…"**, **Save as...**, **All saved views**, and the **Save current
+  view** dialog with its **Filter rules error occurred while saving this view** /
+  **The error returned was** alert); the **Workflows** page (**Name**,
+  **Sort order**, **Status** with **Enabled** / **Disabled**, **Triggers**,
+  **Actions**, **Add Workflow**, **Edit**, **Delete**, **Copy**, **No workflows
+  defined.**, and the **Confirm delete workflow** dialog ending in **Proceed**)
+  and its dialog (**Trigger type** — **Consumption Started**, **Document
+  Added**, **Document Updated**, **Scheduled**; **Filter filename**, **Filter
+  sources**, **Filter path**, **Filter mail rule**, **Content matching
+  algorithm**, **Advanced Filters** with its thirteen tests, **Offset days**,
+  **Relative to**, **Recurring**; **Action type** — **Assignment**, **Removal**,
+  **Email**, **Webhook**, **Password removal**, **Move to trash** — with
+  **Assign title**, **Assign tags**, **Remove all**, **Email subject**,
+  **Webhook url**, **Passwords**); and **Mail Settings** (**Mail accounts** and
+  **Mail rules** with their **Name** / **Server** / **Username**, **Sort
+  Order** / **Account** / **Status** / **Processed Mail** columns, **Add
+  Account**, **Connect Gmail Account**, **Connect Outlook Account**, **Add
+  Rule**, **Process Mail**, **Test** with its two result messages, the account
+  and rule dialogs including **Consumption scope**, **Attachment type**, **PDF
+  layout**, **Action**, **Assign title from**, **Assign correspondent from**,
+  **Stop further processing**, and the **Processed Mail** dialog with **Subject**
+  / **Received** / **Processed** / **Status** / **Error**, **Clear**, **Delete
+  selected**). The `{{…}}` values used in the workflow examples are placeholders
+  the application itself offers for titles and messages, and the page says which
+  of them work with every trigger type.
 
 ## Index / navigation
 
@@ -170,3 +215,9 @@ repository, so that every quoted label is a real label.
   `custom-fields` in reading order — the same order used by the **Attributes**
   tabs in the app — with matching rows in both tables of `docs/guides.md` and
   matching bullets in `docs/index.md`.
+- [x] Section 4 added a nested **Automation** group to the `nav`, holding
+  `saved-views`, `workflows`, and `mail` in reading order — the order of the
+  **Manage** section of the sidebar, where the three pages live — with matching
+  rows in both tables of `docs/guides.md` and matching bullets in
+  `docs/index.md`.
+

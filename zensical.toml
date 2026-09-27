@@ -37,6 +37,11 @@ nav = [
       "attributes/storage-paths.md",
       "attributes/custom-fields.md",
     ] },
+    { "Automation" = [
+      "saved-views.md",
+      "workflows.md",
+      "mail.md",
+    ] },
   ] },
   "setup.md",
   "usage.md",
